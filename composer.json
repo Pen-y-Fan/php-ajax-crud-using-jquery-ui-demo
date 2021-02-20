@@ -1,0 +1,7 @@
+{
+    "name": "pen-y-fan/php-ajax-crud-using-jquery-ui-demo",
+    "description": "This is a basic CRUD app which uses jQuery Ajax calls to a PHP backend.",
+    "type": "project",
+    "license": "MIT",
+    "require": {}
+}
