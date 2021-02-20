@@ -6,13 +6,13 @@ services:
       - "traefik.backend=ajaxcrud"
   #    - "traefik.frontend.rule=Host:ajaxcrud.docker.localhost"
     environment:
-      - MYSQL_HOST=mysql
+      - MYSQL_HOST=database
       - APACHE_SERVER_NAME=ajaxcrud.docker.localhost
       - PHP_SHORT_OPEN_TAG=On
       - PHP_ERROR_REPORTING=E_ALL
       - PHP_DISPLAY_ERRORS=On
       - PHP_HTML_ERRORS=On
-      - PHP_XDEBUG_ENABLED=true
+      - PHP_XDEBUG_ENABLED=false
     networks:
       - default
     ports:
