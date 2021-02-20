@@ -2,7 +2,7 @@
 
 //fetch.php
 
-include("database_connection.php");
+include(__DIR__ . "/../database_connection.php");
 
 $query = "SELECT * FROM tbl_sample";
 $statement = $connect->prepare($query);

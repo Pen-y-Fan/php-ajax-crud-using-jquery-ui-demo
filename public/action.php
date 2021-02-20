@@ -2,7 +2,7 @@
 
 //action.php
 
-include('database_connection.php');
+include(__DIR__ . '/../database_connection.php');
 
 if(isset($_POST["action"]))
 {
