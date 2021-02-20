@@ -13,6 +13,7 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Move the database config out of the public directory
 - [x] Separate the css and js from the html
 - [x] Add README.md and LICENSE
+- [x] Create GitHub repo
 - [ ] Add composer
 - [ ] Add tooling, ECS, PHPUnit, PhpStan and Rector
 - [ ] Add CRUD tests using SQLite in memory DB
