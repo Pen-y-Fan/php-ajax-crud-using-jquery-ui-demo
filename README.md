@@ -15,7 +15,7 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Add README.md and LICENSE
 - [x] Create GitHub repo
 - [ ] Add composer
-- [ ] Add tooling, ECS, PHPUnit, PhpStan and Rector
+- [ ] Add tooling: ECS, PHPUnit, PhpStan and Rector
 - [ ] Add CRUD tests using SQLite in memory DB
   - [ ] refactor PHP files for testing environment (add **config** to **.env**)
 - [ ] Refactor PHP files to classes
@@ -62,10 +62,12 @@ docker-compose up --build --remove-orphans -d
 
 ## Configuring the database
 
-The database is configured to use the MySQL server in the **docker-compose.yml** called **database**. You can change the 
-configuration by editing the **database_connection.php** file. This has variables for the database name, username and
-password. Edit this file and enter your settings. PHP PDO is used, meaning many SQL databases can be used, it is 
-currently set to MySQL.
+If you are using **Docker** with the supplied **docker-config** you do not need to alter any settings for the database.
+
+If you want to use your own local setup, you can change the configuration by editing the **database_settings.php** file.
+This has variables for the host name, database name, username and password. If you wish to use your own, local settings, 
+edit this file and enter your settings. PHP PDO is used, meaning many SQL databases can be used, it is currently 
+configured for MySQL.
 
 Once you are happy with the configuration the database, table and sample data can be created.
 
@@ -76,7 +78,7 @@ make build
 Or the docker command:
 
 ```sh
-
+docker-compose exec -u 100:101 ajaxcrud php /app/build_db.php
 ```
 
 You should see output like:
@@ -91,9 +93,9 @@ Adding sample data
 3 names added to table
 ```
 
-Open you browser to <http://localhost:8080> and view the app.
+Open your browser to <http://localhost:8080> and view the app.
 
-!["Example app"](./doc/php-ajax-crup-app.png)
+!["Example CRUD app"](./doc/php-ajax-crup-app.png "Example CRUD app")
 
 Note: Rerunning the build command will add the 3 names again. It will not drop the table or database, if they already 
 exist.
