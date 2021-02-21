@@ -1,2 +1,4 @@
 /vendor/
 /public/phpinfo.php
+/tmp-phpqa/
+/build/

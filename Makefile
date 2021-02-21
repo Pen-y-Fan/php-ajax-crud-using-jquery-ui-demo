@@ -5,6 +5,13 @@
 # make shell-root -  opens a sh in ajaxcrud container as root user
 # make shell-web -  opens a sh in ajaxcrud container as www-data user
 # make up-f - start the docker-compose in foreground (useful for error messages)
+# make tests - run phpunit tests
+# make test-coverage phpunit coverage html report will be created in build/coverage
+# make phpstan - static analysis using phpstan
+# make checkcode - check code using php_code sniffer (phpcbf)
+# make fixcode - fix code using php_code sniffer (phpcbf)
+# make check-cs - check code using easy coding standards (ecs)
+# make fix-cs - fix code using easy coding standards (ecs)
 
 # To check your user ID run echo $(id -u)
 UID = 1000
@@ -12,7 +19,8 @@ GID = 1000
 # apache:apache is 100:101
 APACHE_UID = 100
 APACHE_GID = 101
-
+# To confirm your working directory, at the command line run: echo $(pwd)
+PWD = ~/PhpstormProjects/jQuery/php-ajax-crud-using-jquery-ui-demo/
 
 up:
 	docker-compose up --build --remove-orphans -d
@@ -31,10 +39,29 @@ shell-root:
 shell-web:
 	docker-compose exec -u ${APACHE_UID}:${APACHE_GID} ajaxcrud sh
 
+chown:
+	docker-compose exec -u $0:0 ajaxcrud chown -R ${UID}:${UID} ./
+
 .PHONY : tests
 tests:
-	docker-compose exec -u ${APACHE_UID}:${APACHE_GID} ajaxcrud vendor/bin/phpunit
-lint:
-	docker-compose exec -u ${APACHE_UID}:${APACHE_GID} ajaxcrud vendor/bin/phpcs app/src app/tests
-lint-clean:
-	docker-compose exec -u ${APACHE_UID}:${APACHE_GID} ajaxcrud vendor/bin/phpcbf app/src app/tests
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+    		jakzal/phpqa:1.50-php7.4-alpine phpunit
+phpstan:
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+		jakzal/phpqa:1.50-php7.4-alpine phpstan analyse
+
+checkcode:
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+    		jakzal/phpqa:1.50-php7.4-alpine phpcs public --standard=PSR12
+
+fixcode:
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+    		jakzal/phpqa:1.50-php7.4-alpine phpcbf public --standard=PSR12
+
+check-cs:
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+    		jakzal/phpqa:1.50-php7.4-alpine ecs check
+
+fix-cs:
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+    		jakzal/phpqa:1.50-php7.4-alpine ecs check --fix

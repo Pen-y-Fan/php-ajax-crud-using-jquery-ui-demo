@@ -1,0 +1,17 @@
+includes:
+    # Note: these rules are inside the docker container
+    - /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
+
+parameters:
+    paths:
+        - public
+#        - src
+#        - tests
+
+    # Level 8 is the highest level
+    level: 8
+
+    ignoreErrors:
+#        -
+#            message: '#Unreachable statement - code above always terminates.#'
+#            path: tests/*Test.php
