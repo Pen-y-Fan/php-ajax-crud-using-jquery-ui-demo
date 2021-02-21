@@ -1,8 +1,8 @@
 <?php
 
-$dbHost = "database";  // database for Docker (set in docker-compose)
-// $host=      "localhost";  // localhost on LINUX
-// $host =      '127.0.0.1';    // 127.0.0.1 on Windows
+$dbHost = 'database';  // database for Docker (set in docker-compose)
+//       'localhost';  // localhost on LINUX
+//        '127.0.0.1';    // 127.0.0.1 on Windows
 $dbName = 'ajax_crud';    // Name of your database
 $dbUser = 'root';    // Your DB user name
 $dbPassword = '';    // Your DB password
