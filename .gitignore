@@ -2,3 +2,4 @@
 /public/phpinfo.php
 /tmp-phpqa/
 /build/
+/.phpunit.result.cache

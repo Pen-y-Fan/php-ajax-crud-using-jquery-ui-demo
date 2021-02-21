@@ -44,8 +44,9 @@ chown:
 
 .PHONY : tests
 tests:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
-    		jakzal/phpqa:1.50-php7.4-alpine phpunit
+	docker-compose exec -u ${UID}:${GID} ajaxcrud ./vendor/bin/phpunit
+
+
 phpstan:
 	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
 		jakzal/phpqa:1.50-php7.4-alpine phpstan analyse
