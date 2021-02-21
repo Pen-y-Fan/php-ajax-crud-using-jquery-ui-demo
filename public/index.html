@@ -1,48 +1,49 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
-    <title>PHP Ajax Crud using JQuery UI Dialog Box</title>
-    <link rel="stylesheet" href="./css/jquery-ui.css">
+  <title>PHP Ajax Crud using JQuery UI Dialog Box</title>
+  <link rel="stylesheet" href="./css/jquery-ui.min.css">
 
 </head>
 <body>
 <div class="container">
 
-    <h1 class="text-center mb-5">PHP Ajax Crud using JQuery UI Dialog</h1>
+  <h1 class="text-center mb-5">PHP Ajax Crud using JQuery UI Dialog</h1>
 
-    <div class="row">
-        <div class="col-sm-1 offset-sm-11 mb-3">
-            <button type="button" name="add" id="add" class="btn btn-success">Add</button>
-        </div>
+  <div class="row">
+    <div class="col-sm-1 offset-sm-11 mb-3">
+      <button type="button" name="add" id="add" class="btn btn-success">Add</button>
     </div>
-    <div class="table-responsive" id="user_data"></div>
+  </div>
+  <div class="table-responsive" id="user_data"></div>
 </div>
 
 <div id="user_dialog" title="Add Data">
-    <form method="post" id="user_form">
-        <div class="form-group">
-            <label for="first_name">Enter First Name</label>
-            <input type="text" name="first_name" id="first_name" class="form-control" />
-            <span id="error_first_name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label for="last_name">Enter Last Name</label>
-            <input type="text" name="last_name" id="last_name" class="form-control"/>
-            <span id="error_last_name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input type="hidden" name="action" id="action" value="insert"/>
-            <input type="hidden" name="hidden_id" id="hidden_id"/>
-            <input type="submit" name="form_action" id="form_action" class="btn btn-info" value="Insert"/>
-        </div>
-    </form>
+  <form method="post" id="user_form">
+    <div class="form-group">
+      <label for="first_name">Enter First Name</label>
+      <input type="text" name="first_name" id="first_name" class="form-control"/>
+      <span id="error_first_name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+      <label for="last_name">Enter Last Name</label>
+      <input type="text" name="last_name" id="last_name" class="form-control"/>
+      <span id="error_last_name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+      <input type="hidden" name="action" id="action" value="insert"/>
+      <input type="hidden" name="hidden_id" id="hidden_id"/>
+      <input type="submit" name="form_action" id="form_action" class="btn btn-info" value="Insert"/>
+    </div>
+  </form>
 </div>
 
 <div id="action_alert" title="Action">
@@ -50,11 +51,11 @@
 </div>
 
 <div id="delete_confirmation" title="Confirmation">
-    <p>Are you sure you want to Delete this data?</p>
+  <p>Are you sure you want to Delete this data?</p>
 </div>
 
 <script src="./js/jquery-3.5.1.min.js"></script>
-<script src="./js/jquery-ui.js"></script>
+<script src="./js/jquery-ui.min.js"></script>
 <script>
   (function ($) {
 
