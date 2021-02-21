@@ -1,6 +1,6 @@
 grumphp:
   tasks:
-# See https://github.com/phpro/grumphp/blob/master/doc/tasks/phpstan.md for config.
+# See https://github.com/phpro/grumphp/blob/master/doc/tasks/phpstan.md for config
     phpstan:
       autoload_file: ~
       configuration: phpstan.neon
