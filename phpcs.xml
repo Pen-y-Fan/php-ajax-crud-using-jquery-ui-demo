@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="PHP-PSR-12-ignore-min">
+    <description>PSR-12 coding standard with exceptions for minified js and css</description>
+
+    <file>app</file>
+
+    <!-- Don't sniff third party libraries -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/thirdparty/*</exclude-pattern>
+    <exclude-pattern>*.min.css</exclude-pattern>
+    <exclude-pattern>*.min.js</exclude-pattern>
+
+    <!-- Show progress and output sniff names on violation, and add colours -->
+    <arg value="sp"/>
+    <arg name="colors"/>
+
+    <!-- Use PSR-12 as a base standard -->
+    <rule ref="PSR12">
+        <!-- Allow classes to not declare a namespace -->
+        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+
+        <!-- Allow underscores in class names -->
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
+
+        <!-- Allow non camel cased method names -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+    </rule>
+</ruleset>

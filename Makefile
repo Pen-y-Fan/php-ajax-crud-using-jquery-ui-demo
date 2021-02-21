@@ -52,11 +52,11 @@ phpstan:
 
 checkcode:
 	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
-    		jakzal/phpqa:1.50-php7.4-alpine phpcs public --standard=PSR12
+    		jakzal/phpqa:1.50-php7.4-alpine phpcs public --standard=phpcs.xml
 
 fixcode:
 	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
-    		jakzal/phpqa:1.50-php7.4-alpine phpcbf public --standard=PSR12
+    		jakzal/phpqa:1.50-php7.4-alpine phpcbf public --standard=phpcs.xml
 
 check-cs:
 	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
