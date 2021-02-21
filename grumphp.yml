@@ -1,0 +1,19 @@
+grumphp:
+  tasks:
+# See https://github.com/phpro/grumphp/blob/master/doc/tasks/phpstan.md for config
+    phpstan:
+      autoload_file: ~
+      configuration: phpstan.neon
+      triggered_by: [ 'php' ]
+      memory_limit: "-1"
+      use_grumphp_paths: true
+    # See https://github.com/phpro/grumphp/blob/master/doc/tasks/ecs.md for config
+    ecs:
+      config: ecs.php
+      level: ~
+      paths: [ ]
+      files_on_pre_commit: false
+      triggered_by: [ 'php' ]
+      clear-cache: false
+      no-progress-bar: true
+

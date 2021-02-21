@@ -65,3 +65,13 @@ check-cs:
 fix-cs:
 	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
     		jakzal/phpqa:1.50-php7.4-alpine ecs check --fix
+
+grumphp:
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+			jakzal/phpqa:1.50-php7.4-alpine ./vendor/bin/grumphp run
+
+toolbox:
+	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project jakzal/phpqa:1.50-php7.4-alpine
+
+# jakzal/phpqa:1.50-php8.0-alpine
+
