@@ -1,6 +1,6 @@
 <?php
 /** @noinspection ALL */
-include __DIR__ . '/database_settings.php';
+include_once __DIR__ . '/database_settings.php';
 
 echo 'Building db' . PHP_EOL;
 
