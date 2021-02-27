@@ -16,4 +16,11 @@ grumphp:
       triggered_by: [ 'php' ]
       clear-cache: false
       no-progress-bar: true
+# Needs pdo_Mysql to run tests, will refactor
+# for pdo_sqlite in the future
+#    phpunit:
+#      config_file: ~
+#      testsuite: ~
+#      group: []
+#      always_execute: false
 
