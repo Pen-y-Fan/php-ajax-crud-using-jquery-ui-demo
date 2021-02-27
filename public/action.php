@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 //action.php
 
-include(__DIR__ . '/../database_connection.php');
+include_once(__DIR__ . '/../database_connection.php');
 
 if (isset($_POST['action'])) {
     if ($_POST['action'] === 'insert') {
         $query = "
-		INSERT INTO tbl_sample (first_name, last_name) 
+		INSERT INTO tbl_sample (first_name, last_name)
 		VALUES ('" . $_POST['first_name'] . "', '" . $_POST['last_name'] . "')
 		";
         /** @var PDO $connect */
@@ -33,9 +33,9 @@ if (isset($_POST['action'])) {
     }
     if ($_POST['action'] === 'update') {
         $query = "
-		UPDATE tbl_sample 
-		SET first_name = '" . $_POST['first_name'] . "', 
-		last_name = '" . $_POST['last_name'] . "' 
+		UPDATE tbl_sample
+		SET first_name = '" . $_POST['first_name'] . "',
+		last_name = '" . $_POST['last_name'] . "'
 		WHERE id = '" . $_POST['hidden_id'] . "'
 		";
         $statement = $connect->prepare($query);

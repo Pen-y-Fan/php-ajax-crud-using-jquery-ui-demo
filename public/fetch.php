@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 //fetch.php
 
-include(__DIR__ . '/../database_connection.php');
+include_once(__DIR__ . '/../database_connection.php');
 
 $query = 'SELECT * FROM tbl_sample';
 $statement = $connect->prepare($query);
@@ -27,17 +27,17 @@ if ($total_row > 0) {
 			<td width="40%">' . $row['first_name'] . '</td>
 			<td width="40%">' . $row['last_name'] . '</td>
 			<td width="10%">
-				<button 
-				type="button" 
-				name="edit" 
-				class="btn btn-primary btn-xs edit" 
+				<button
+				type="button"
+				name="edit"
+				class="btn btn-primary btn-xs edit"
 				id="' . $row['id'] . '">Edit</button>
 			</td>
 			<td width="10%">
-				<button 
-				type="button" 
-				name="delete" 
-				class="btn btn-danger btn-xs delete" 
+				<button
+				type="button"
+				name="delete"
+				class="btn btn-danger btn-xs delete"
 				id="' . $row['id'] . '">Delete</button>
 			</td>
 		</tr>
