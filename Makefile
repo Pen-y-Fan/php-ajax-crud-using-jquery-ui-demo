@@ -13,14 +13,9 @@
 # make check-cs - check code using easy coding standards (ecs)
 # make fix-cs - fix code using easy coding standards (ecs)
 
-# To check your user ID run echo $(id -u)
-UID = 1000
-GID = 1000
 # apache:apache is 100:101
 APACHE_UID = 100
 APACHE_GID = 101
-# To confirm your working directory, at the command line run: echo $(pwd)
-PWD = ~/PhpstormProjects/jQuery/php-ajax-crud-using-jquery-ui-demo/
 
 up:
 	docker-compose up --build --remove-orphans -d
@@ -29,50 +24,49 @@ up-f:
 down:
 	docker-compose down --remove-orphans
 shell:
-	docker-compose exec -u ${UID}:${GID} ajaxcrud sh
+	docker-compose exec -u ${shell id -u}:${shell id -g} ajaxcrud sh
 build:
 	 docker-compose exec -u ${APACHE_UID}:${APACHE_GID} ajaxcrud php /app/build_db.php
 shell-run:
-	docker-compose run -u ${UID}:${UID} ajaxcrud sh
+	docker-compose run -u ${shell id -u}:${shell id -g} ajaxcrud sh
 shell-root:
 	docker-compose exec -u 0:0 ajaxcrud sh
 shell-web:
 	docker-compose exec -u ${APACHE_UID}:${APACHE_GID} ajaxcrud sh
 
 chown:
-	docker-compose exec -u $0:0 ajaxcrud chown -R ${UID}:${UID} ./
+	docker-compose exec -u $0:0 ajaxcrud chown -R ${shell id -u}:${shell id -g} ./
 
 .PHONY : tests
 tests:
-	docker-compose exec -u ${UID}:${GID} ajaxcrud ./vendor/bin/phpunit
+	docker-compose exec -u ${shell id -u}:${shell id -g} ajaxcrud ./vendor/bin/phpunit
 
 
 phpstan:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project \
 		jakzal/phpqa:1.50-php7.4-alpine phpstan analyse
 
 checkcode:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project \
     		jakzal/phpqa:1.50-php7.4-alpine phpcs public --standard=phpcs.xml
 
 fixcode:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project \
     		jakzal/phpqa:1.50-php7.4-alpine phpcbf public --standard=phpcs.xml
 
 check-cs:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project \
     		jakzal/phpqa:1.50-php7.4-alpine ecs check
 
 fix-cs:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project \
     		jakzal/phpqa:1.50-php7.4-alpine ecs check --fix
 
 grumphp:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project \
+	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project \
 			jakzal/phpqa:1.50-php7.4-alpine ./vendor/bin/grumphp run
 
 toolbox:
-	docker run --init -it --rm -v $(PWD):/project -v $(PWD)/tmp-phpqa:/tmp -w /project jakzal/phpqa:1.50-php7.4-alpine
+	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project jakzal/phpqa:1.50-php7.4-alpine sh
 
 # jakzal/phpqa:1.50-php8.0-alpine
-
