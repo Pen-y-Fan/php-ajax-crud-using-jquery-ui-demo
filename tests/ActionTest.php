@@ -8,6 +8,10 @@ class ActionTest extends TestCase
 {
     /** @var CreateSQLiteTable */
     private $createSQLiteTable;
+    /**
+     * @var PDO
+     */
+    private $connect;
 
     /**
      * FetchTest constructor.
@@ -22,8 +26,15 @@ class ActionTest extends TestCase
         $this->createSQLiteTable = new CreateSQLiteTable();
     }
 
+protected function setUp(): void
+{
+    parent::setUp();
+    $this->connect = $this->createSQLiteTable->createSQLiteTableWithData();
+}
+
     public function tearDown(): void
     {
+        parent::tearDown();
         foreach ($_POST as $key => $post) {
             unset($_POST[$key]);
         }
@@ -32,7 +43,7 @@ class ActionTest extends TestCase
 
     public function testANameCanBeAddedToTheTable(): void
     {
-        $connect = $this->createSQLiteTable->createSQLiteTableWithData();
+        $connect = $this->connect;
 
         $_POST['action'] = 'insert';
         $_POST['first_name'] = "George";
@@ -59,7 +70,7 @@ class ActionTest extends TestCase
 
     public function testASingleRowCanBeSelectedById(): void
     {
-        $connect = $this->createSQLiteTable->createSQLiteTableWithData();
+        $connect = $this->connect;
 
         $_POST['action'] = 'fetch_single';
         $_POST['id'] = 1;
@@ -78,7 +89,7 @@ class ActionTest extends TestCase
 
     public function testASingleRecordCanBeUpdated(): void
     {
-        $connect = $this->createSQLiteTable->createSQLiteTableWithData();
+        $connect = $this->connect;
 
         $_POST['action'] = 'update';
         $_POST['first_name'] = "Jenny";
@@ -96,7 +107,8 @@ class ActionTest extends TestCase
 
         self::assertSame('<p>Data Updated</p>', $output);
 
-        $query = "SELECT * FROM tbl_sample WHERE `first_name` = 'Jenny'";
+        $query = /** @lang SQLite */
+            "SELECT * FROM tbl_sample WHERE `first_name` = 'Jenny'";
         $statement = $connect->query($query);
         self::assertNotFalse($statement);
         $result = $statement->fetchAll();
@@ -106,5 +118,31 @@ class ActionTest extends TestCase
 
         self::assertSame("Jenny",$result[count($result)-1]['first_name']);
         self::assertSame("Jones",$result[count($result)-1]['last_name']);
+    }
+    public function testASingleRecordCanBeDeleted(): void
+    {
+        $connect = $this->connect;
+
+        $_POST['id'] = 2;
+
+        ob_start();
+        require_once __DIR__ . '/../public/action.php';
+        $output = ob_get_contents();
+        if ($output === "") {
+            delete($connect);
+            $output = ob_get_contents();
+        }
+        ob_end_clean();
+
+        self::assertSame('<p>Data Deleted</p>', $output);
+
+        $query = /** @lang SQLite */
+            "SELECT * FROM tbl_sample WHERE `last_name` = 'Williams'";
+        $statement = $connect->query($query);
+        self::assertNotFalse($statement);
+        $result = $statement->fetchAll();
+        self::assertNotFalse($result);
+
+        self::assertCount(0, $result);
     }
 }

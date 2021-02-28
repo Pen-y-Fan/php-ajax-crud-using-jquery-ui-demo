@@ -17,7 +17,6 @@ function index(PDO $connect): void
     $statement = $connect->prepare($query);
     $statement->execute();
     echo '<p>Data Inserted...</p>';
-//    return array($query, $statement);
 }
 
 function show(PDO $connect): void
@@ -54,6 +53,15 @@ function update(PDO $connect): void
     echo '<p>Data Updated</p>';
 }
 
+function delete(PDO $connect): void
+{
+    $query = /** @lang MySQL|SQLite */
+        "DELETE FROM tbl_sample WHERE id = '" . $_POST['id'] . "'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    echo '<p>Data Deleted</p>';
+}
+
 if (isset($_POST['action'])) {
     if ($_POST['action'] === 'insert') {
         /** @var PDO $connect */
@@ -68,9 +76,7 @@ if (isset($_POST['action'])) {
         update($connect);
     }
     if ($_POST['action'] === 'delete') {
-        $query = "DELETE FROM tbl_sample WHERE id = '" . $_POST['id'] . "'";
-        $statement = $connect->prepare($query);
-        $statement->execute();
-        echo '<p>Data Deleted</p>';
+        /** @var PDO $connect */
+        delete($connect);
     }
 }

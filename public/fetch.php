@@ -7,10 +7,15 @@ declare(strict_types=1);
 include_once(__DIR__ . '/../database_connection.php');
 
 $query = 'SELECT * FROM tbl_sample';
+/** @var PDO $connect */
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
-$total_row = count($result);
+if ($result === false) {
+    $total_row = 0;
+} else {
+    $total_row = count($result);
+}
 $output = '
 <table class="table table-striped table-bordered">
 	<tr>
@@ -20,7 +25,7 @@ $output = '
 		<th>Delete</th>
 	</tr>
 ';
-if ($total_row > 0) {
+if ($total_row > 0 && $result !== false) {
     foreach ($result as $row) {
         $output .= '
 		<tr>
