@@ -9,6 +9,13 @@ class CreateSQLiteTable
     {
         putenv('APP_ENV=TESTING');
         include(__DIR__ . '/../database_connection.php');
+
+        $dropTable_SQL = /** @lang SQLite */
+            "DROP TABLE IF EXISTS tbl_sample;";
+
+        /** @var PDO $connect */
+        $connect->exec($dropTable_SQL);
+
         $createTable_SQL = /** @lang SQLite */
             <<<SQL
             CREATE TABLE tbl_sample
@@ -19,7 +26,7 @@ class CreateSQLiteTable
                     "reg_date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 SQL;
-        /** @var PDO $connect */
+
         $connect->exec($createTable_SQL);
 
         $table_SQLinsert = /** @lang SQLite */

@@ -22,6 +22,14 @@ class ActionTest extends TestCase
         $this->createSQLiteTable = new CreateSQLiteTable();
     }
 
+    public function tearDown(): void
+    {
+        foreach ($_POST as $key => $post) {
+            unset($_POST[$key]);
+        }
+
+    }
+
     public function testANameCanBeAddedToTheTable(): void
     {
         $connect = $this->createSQLiteTable->createSQLiteTableWithData();
@@ -48,5 +56,24 @@ class ActionTest extends TestCase
 
         self::assertSame("George",$result[count($result)-1]['first_name']);
         self::assertSame("Evans",$result[count($result)-1]['last_name']);
+    }
+
+    public function testASingleRowCanBeSelectedById(): void
+    {
+        $connect = $this->createSQLiteTable->createSQLiteTableWithData();
+
+        $_POST['action'] = 'fetch_single';
+        $_POST['id'] = 1;
+
+    ob_start();
+        require_once __DIR__ . '/../public/action.php';
+        $output = ob_get_contents();
+        if ($output === "") {
+            show($connect);
+            $output = ob_get_contents();
+        }
+        ob_end_clean();
+
+        self::assertSame('{"first_name":"Fred","last_name":"Bloggs"}', $output);
     }
 }

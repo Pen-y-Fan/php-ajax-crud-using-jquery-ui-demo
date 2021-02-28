@@ -20,24 +20,33 @@ function insertData(PDO $connect): void
 //    return array($query, $statement);
 }
 
+function show(PDO $connect): void
+{
+    $query = /** @lang MySQL|SQLite */
+        "SELECT * FROM tbl_sample WHERE id = '" . $_POST['id'] . "'";
+    $statement = $connect->query($query);
+    $result = [];
+    if ($statement !== false) {
+        $result = $statement->fetchAll();
+    }
+    if ($result === false) {
+        $result = [];
+    }
+    $output = [];
+    foreach ($result as $row) {
+        $output['first_name'] = $row['first_name'];
+        $output['last_name'] = $row['last_name'];
+    }
+    echo json_encode($output);
+}
+
 if (isset($_POST['action'])) {
     if ($_POST['action'] === 'insert') {
         /** @var PDO $connect */
         insertData($connect);
     }
     if ($_POST['action'] === 'fetch_single') {
-        $query = "
-		SELECT * FROM tbl_sample WHERE id = '" . $_POST['id'] . "'
-		";
-        $statement = $connect->prepare($query);
-        $statement->execute();
-        $result = $statement->fetchAll();
-        $output = [];
-        foreach ($result as $row) {
-            $output['first_name'] = $row['first_name'];
-            $output['last_name'] = $row['last_name'];
-        }
-        echo json_encode($output);
+        show($connect);
     }
     if ($_POST['action'] === 'update') {
         $query = "
