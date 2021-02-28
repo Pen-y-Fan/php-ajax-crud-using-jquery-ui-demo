@@ -27,7 +27,7 @@ class SQLiteTest extends TestCase
         $createTable_SQL = <<<SQL
 CREATE TABLE tbl_sample
 (
-    "id" INTEGER PRIMARY KEY,
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "first_name" TEXT,
     "last_name" TEXT
 );
@@ -53,14 +53,13 @@ SQL;
 
 
         // Prepare INSERT statement to SQLite3 memory db
-        $insert = "INSERT INTO tbl_sample (id, first_name, last_name)
-                VALUES (:id, :firstname, :lastname)";
+        $insert = "INSERT INTO tbl_sample (first_name, last_name)
+                VALUES (:firstname, :lastname)";
         $stmt = $connect->prepare($insert);
 
         // Loop thru all data from messages table
         // and insert it to db
         foreach ($names as $key => $name) {
-            $stmt->bindValue(':id', $key, PDO::PARAM_INT);
             $stmt->bindValue(':firstname', $name['firstName']);
             $stmt->bindValue(':lastname', $name['lastName']);
 
@@ -69,7 +68,7 @@ SQL;
         }
 
         // Select all data from memory db messages table
-        $sth = $connect->query('SELECT * FROM tbl_sample');
+        $sth = $connect->query(/** @lang SQLite */ 'SELECT * FROM tbl_sample');
 
         self::assertIsObject($sth);
         $result = $sth->fetchAll();
@@ -87,7 +86,7 @@ SQL;
         $count = count($names);
 
         for ($i = 0; $i < $count; $i++) {
-            self::assertSame($i, (int)$result[$i]['id']);
+            self::assertSame($i + 1, (int)$result[$i]['id']);
             self::assertSame($names[$i]['firstName'], $result[$i]['first_name']);
             self::assertSame($names[$i]['lastName'], $result[$i]['last_name']);
         }
