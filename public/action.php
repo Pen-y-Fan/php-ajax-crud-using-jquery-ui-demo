@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 include_once(__DIR__ . '/../database_connection.php');
 
-function insertData(PDO $connect): void
+function index(PDO $connect): void
 {
     $query = /** @lang MySQL|SQLite */
         "
@@ -40,24 +40,32 @@ function show(PDO $connect): void
     echo json_encode($output);
 }
 
-if (isset($_POST['action'])) {
-    if ($_POST['action'] === 'insert') {
-        /** @var PDO $connect */
-        insertData($connect);
-    }
-    if ($_POST['action'] === 'fetch_single') {
-        show($connect);
-    }
-    if ($_POST['action'] === 'update') {
-        $query = "
+function update(PDO $connect): void
+{
+    $query = /** @lang MySQL|SQLite */
+        "
 		UPDATE tbl_sample
 		SET first_name = '" . $_POST['first_name'] . "',
 		last_name = '" . $_POST['last_name'] . "'
 		WHERE id = '" . $_POST['hidden_id'] . "'
 		";
-        $statement = $connect->prepare($query);
-        $statement->execute();
-        echo '<p>Data Updated</p>';
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    echo '<p>Data Updated</p>';
+}
+
+if (isset($_POST['action'])) {
+    if ($_POST['action'] === 'insert') {
+        /** @var PDO $connect */
+        index($connect);
+    }
+    if ($_POST['action'] === 'fetch_single') {
+        /** @var PDO $connect */
+        show($connect);
+    }
+    if ($_POST['action'] === 'update') {
+        /** @var PDO $connect */
+        update($connect);
     }
     if ($_POST['action'] === 'delete') {
         $query = "DELETE FROM tbl_sample WHERE id = '" . $_POST['id'] . "'";

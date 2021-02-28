@@ -46,7 +46,6 @@ class ActionTest extends TestCase
         self::assertSame('<p>Data Inserted...</p>', $output);
 
         $query = "SELECT * FROM tbl_sample";
-//        $query = "SELECT * FROM tbl_sample";
         $statement = $connect->query($query);
         self::assertNotFalse($statement);
         $result = $statement->fetchAll();
@@ -75,5 +74,37 @@ class ActionTest extends TestCase
         ob_end_clean();
 
         self::assertSame('{"first_name":"Fred","last_name":"Bloggs"}', $output);
+    }
+
+    public function testASingleRecordCanBeUpdated(): void
+    {
+        $connect = $this->createSQLiteTable->createSQLiteTableWithData();
+
+        $_POST['action'] = 'update';
+        $_POST['first_name'] = "Jenny";
+        $_POST['last_name'] = "Jones";
+        $_POST['hidden_id'] = 1;
+
+        ob_start();
+        require_once __DIR__ . '/../public/action.php';
+        $output = ob_get_contents();
+        if ($output === "") {
+            update($connect);
+            $output = ob_get_contents();
+        }
+        ob_end_clean();
+
+        self::assertSame('<p>Data Updated</p>', $output);
+
+        $query = "SELECT * FROM tbl_sample WHERE `first_name` = 'Jenny'";
+        $statement = $connect->query($query);
+        self::assertNotFalse($statement);
+        $result = $statement->fetchAll();
+        self::assertNotFalse($result);
+
+        self::assertCount(1, $result);
+
+        self::assertSame("Jenny",$result[count($result)-1]['first_name']);
+        self::assertSame("Jones",$result[count($result)-1]['last_name']);
     }
 }
