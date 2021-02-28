@@ -18,7 +18,7 @@ class FetchTest extends TestCase
             throw new Error('Unable to test output of fetch.php');
         }
 
-        self::assertStringContainsString('<td width="40%">Freda</td>', $output);
+        self::assertStringContainsString('<td width="40%">Fred</td>', $output);
         self::assertStringContainsString('<td width="40%">Bloggs</td>', $output);
         self::assertStringContainsString('<td width="40%">David</td>', $output);
         self::assertStringContainsString('<td width="40%">Williams</td>', $output);
