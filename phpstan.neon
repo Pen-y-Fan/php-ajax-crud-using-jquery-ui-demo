@@ -28,8 +28,8 @@ parameters:
             path: build_db.php
         -
             message: '#Undefined variable: \$connect#'
-            path: tests/FetchTest.php
+            path: tests/CreateSQLiteTable.php
         -
             message: '#Variable \$connect in PHPDoc tag @var does not exist.#'
-            path: tests/FetchTest.php
+            path: tests/CreateSQLiteTable.php
 
