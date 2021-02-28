@@ -18,7 +18,7 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Add composer
 - [x] Add tooling: ECS, PHPUnit, PhpStan and Rector (jakzal/phpqa:1.50-php7.4-alpine)
 - [x] Test SQLite in memory DB
-- [ ] Add CRUD tests using SQLite in memory DB
+- [x] Add CRUD tests using SQLite in memory DB
     - [ ] refactor PHP files for testing environment (add **config** to **.env**)
 - [ ] Refactor PHP files to classes
     - [ ] Add namespacing and auto-loading
