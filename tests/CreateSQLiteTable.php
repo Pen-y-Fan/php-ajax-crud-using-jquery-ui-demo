@@ -8,7 +8,7 @@ class CreateSQLiteTable
     public function createSQLiteTableWithData(): PDO
     {
         putenv('APP_ENV=TESTING');
-        include_once(__DIR__ . '/../database_connection.php');
+        include(__DIR__ . '/../database_connection.php');
         $createTable_SQL = /** @lang SQLite */
             <<<SQL
             CREATE TABLE tbl_sample

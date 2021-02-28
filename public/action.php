@@ -6,16 +6,24 @@ declare(strict_types=1);
 
 include_once(__DIR__ . '/../database_connection.php');
 
-if (isset($_POST['action'])) {
-    if ($_POST['action'] === 'insert') {
-        $query = "
+function insertData(PDO $connect): void
+{
+    $query = /** @lang MySQL|SQLite */
+        "
 		INSERT INTO tbl_sample (first_name, last_name)
 		VALUES ('" . $_POST['first_name'] . "', '" . $_POST['last_name'] . "')
 		";
+    /** @var PDO $connect */
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    echo '<p>Data Inserted...</p>';
+//    return array($query, $statement);
+}
+
+if (isset($_POST['action'])) {
+    if ($_POST['action'] === 'insert') {
         /** @var PDO $connect */
-        $statement = $connect->prepare($query);
-        $statement->execute();
-        echo '<p>Data Inserted...</p>';
+        insertData($connect);
     }
     if ($_POST['action'] === 'fetch_single') {
         $query = "
