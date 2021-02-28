@@ -26,3 +26,10 @@ parameters:
         -
             message: '#Cannot call method prepare\(\) on null.#'
             path: build_db.php
+        -
+            message: '#Undefined variable: \$connect#'
+            path: tests/FetchTest.php
+        -
+            message: '#Variable \$connect in PHPDoc tag @var does not exist.#'
+            path: tests/FetchTest.php
+

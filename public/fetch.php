@@ -10,7 +10,7 @@ $query = 'SELECT * FROM tbl_sample';
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
-$total_row = $statement->rowCount();
+$total_row = count($result);
 $output = '
 <table class="table table-striped table-bordered">
 	<tr>
