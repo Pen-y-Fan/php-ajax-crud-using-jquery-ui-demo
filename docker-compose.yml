@@ -19,6 +19,7 @@ services:
       - "8080:80"
     volumes:
       - ./:/app
+      - ./tmp-phpqa:/tmp
     working_dir: /app
     depends_on:
       - database
