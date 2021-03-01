@@ -19,7 +19,7 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Add tooling: ECS, PHPUnit, PhpStan and Rector (jakzal/phpqa:1.50-php7.4-alpine)
 - [x] Test SQLite in memory DB
 - [x] Add CRUD tests using SQLite in memory DB
-    - [ ] refactor PHP files for testing environment (add **config** to **.env**)
+    - [x] refactor PHP files for testing environment (add **config** to **.env**)
 - [ ] Refactor PHP files to classes
     - [ ] Add namespacing and auto-loading
 - [ ] Move jQuery script out of index.html into own file in js directory
@@ -46,9 +46,12 @@ git clone git@github.com:Pen-y-Fan/php-ajax-crud-using-jquery-ui-demo.git
 
 For other ways see [github docs](https://docs.github.com/en/github/using-git/which-remote-url-should-i-use).
 
-## Usage
+## Setup
 
-The easiest way it to use the provided Makefile, which will spin up the Docker environment:
+The easiest way it to use the provided Makefile. This will spin up the Docker environment, all the default setting have 
+been configured for you. You can set up the project with a local configuration.
+
+### Docker
 
 ```sh
 make up
@@ -62,31 +65,43 @@ Without make the following docker-compose command can be used:
 docker-compose up --build --remove-orphans -d
 ```
 
+### Local configuration
+
+Alternatively, you can set up your own Apache, PHP and MySQL server. The **.env.example** file can be copied:
+
+```shell
+cp .env.example .env
+```
+
+Edit the **.env** file and add you database settings. You do not need to manually create the database.
+
 ## Configuring the database
 
 If you are using **Docker** with the supplied **docker-config** you do not need to alter any settings for the database.
 
-If you want to use your own local setup, you can change the configuration by editing the **database_settings.php** file.
-This has variables for the host name, database name, username and password. If you wish to use your own, local settings,
-edit this file and enter your settings. PHP PDO is used, meaning many SQL databases can be used, it is currently
-configured for MySQL.
+The database, table and sample data can be created by following one of the following three methods:
 
-Once you are happy with the configuration the database, table and sample data can be created.
+- Use the make script
 
 ```sh
 make build
 ```
 
-Or the docker command:
+- Or the docker command:
 
 ```sh
 docker-compose exec -u 100:101 ajaxcrud php /app/build_db.php
 ```
 
+- Or use PHP locally:
+
+```shell
+php build_db.php
+```
+
 You should see output like:
 
-```sh
-docker-compose exec -u 100:101 ajaxcrud php /app/build_db.php
+```text
 Building db
 Database database created OK
 Creating table tbl_sample

@@ -1,12 +1,40 @@
 <?php
 declare(strict_types=1);
 
-$dbHost = 'database';  // database for Docker (set in docker-compose)
+$ini_array = parse_ini_file(__DIR__ . "/.env");
+
+if ($ini_array !== false) {
+    foreach ($ini_array as $key => $value) {
+        putenv($key . '=' . $value);
+    }
+}
+
+if (getenv('DATABASE_SERVER') === false) {
+    $dbHost = 'database';  // database for Docker (set in docker-compose)
 //       'localhost';  // localhost on LINUX
 //        '127.0.0.1';    // 127.0.0.1 on Windows
-$dbName = 'ajax_crud';    // Name of your database
-$dbUser = 'root';    // Your DB user name
-$dbPassword = '';    // Your DB password
+} else {
+    $dbHost = getenv('DATABASE_SERVER');
+}
+
+if (getenv('DATABASE_NAME') === false) {
+    $dbName = 'ajax_crud';    // Name of your database
+} else {
+    $dbName = getenv('DATABASE_NAME');
+}
+
+if (getenv('DATABASE_USERNAME') === false) {
+    $dbUser = 'root';    // Your DB user name
+} else {
+    $dbUser = getenv('DATABASE_USERNAME');
+}
+
+if (getenv('DATABASE_PASSWORD') === false) {
+    $dbPassword = '';    // Your DB password
+} else {
+    $dbPassword = getenv('DATABASE_PASSWORD');
+}
+
 
 $dbCharset = "utf8mb4";
 
