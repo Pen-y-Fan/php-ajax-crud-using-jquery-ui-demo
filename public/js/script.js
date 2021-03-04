@@ -5,7 +5,7 @@
   function load_data() {
     $.ajax({
       url: "api/index.php",
-      method: "POST",
+      method: "GET",
       success: function (data) {
         $('#user_data').html(data);
       }
@@ -52,10 +52,12 @@
     if (error_first_name != '' || error_last_name != '') {
       return false;
     } else {
-      $('#form_action').attr('disabled', 'disabled');
+      $('#form_action').prop( "disabled", true );
       var form_data = $(this).serialize();
+      var action = $('#action').val();
+      var api = action == "update" ? "/api/update/index.php" : "/api/store/index.php";
       $.ajax({
-        url: "action.php",
+        url: api,
         method: "POST",
         data: form_data,
         success: function (data) {
@@ -63,7 +65,7 @@
           $('#action_alert').html(data);
           $('#action_alert').dialog('open');
           load_data();
-          $('#form_action').attr('disabled', false);
+          $('#form_action').prop('disabled', false);
         }
       });
     }
@@ -78,13 +80,13 @@
     var id = $(this).attr('id');
     var action = 'fetch_single';
     $.ajax({
-      url: "action.php",
-      method: "POST",
-      data: {id: id, action: action},
+      url: "/api/show/index.php",
+      method: "GET",
+      data: {id: id},
       dataType: "json",
       success: function (data) {
-        $('#first_name').val(data.first_name);
-        $('#last_name').val(data.last_name);
+        $('#first_name').val(data[0].first_name);
+        $('#last_name').val(data[0].last_name);
         $('#user_dialog').attr('title', 'Edit Data');
         $('#action').val('update');
         $('#hidden_id').val(id);
@@ -102,7 +104,7 @@
         var id = $(this).data('id');
         var action = 'delete';
         $.ajax({
-          url: "action.php",
+          url: "/api/delete/index.php",
           method: "POST",
           data: {id: id, action: action},
           success: function (data) {

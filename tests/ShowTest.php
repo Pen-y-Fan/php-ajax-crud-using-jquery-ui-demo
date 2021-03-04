@@ -21,17 +21,15 @@ class ShowTest extends TestCase
         foreach ($_POST as $key => $post) {
             unset($_POST[$key]);
         }
-        $_POST['action'] = 'fetch_single';
-        $_POST['id'] = 1;
+        $_GET['id'] = 1;
 
         ob_start();
         require __DIR__ . '/../public/api/show/index.php';
-        $output = ob_get_contents();
-        ob_end_clean();
+        $output = ob_get_clean();
 
         self::assertNotFalse($output, 'Unable to test output of api/index.php');
 
-        self::assertSame('{"id":"1","first_name":"Fred","last_name":"Bloggs"}', $output);
+        self::assertSame('[{"id":"1","first_name":"Fred","last_name":"Bloggs"}]', $output);
     }
 }
 

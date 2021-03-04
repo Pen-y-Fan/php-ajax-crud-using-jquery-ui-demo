@@ -6,7 +6,7 @@ namespace App\Tests;
 use PHPUnit\Framework\Error;
 use PHPUnit\Framework\TestCase;
 
-class FetchTest extends TestCase
+class IndexTest extends TestCase
 {
     public function tearDown(): void
     {
@@ -22,8 +22,7 @@ class FetchTest extends TestCase
 
         ob_start();
         require_once __DIR__ . '/../public/api/index.php';
-        $output = ob_get_contents();
-        ob_end_clean();
+        $output = ob_get_clean();
 
         if ($output === false) {
             throw new Error('Unable to test output of api/index.php');
@@ -40,23 +39,4 @@ class FetchTest extends TestCase
         self::assertStringContainsString('class="btn btn-primary btn-xs edit"', $output);
         self::assertStringContainsString('class="btn btn-danger btn-xs delete"', $output);
     }
-
-    public function testShow(): void
-    {
-        putenv('APP_ENV=TESTING');
-
-        $_POST['action'] = 'fetch_single';
-        $_POST['id'] = 1;
-
-
-        ob_start();
-        require_once __DIR__ . '/../public/api/show/index.php';
-        $output = ob_get_contents();
-        ob_end_clean();
-
-        self::assertNotFalse($output, 'Unable to test output of api/show/index.php');
-
-        self::assertSame('{"id":"1","first_name":"Fred","last_name":"Bloggs"}', $output);
-    }
 }
-

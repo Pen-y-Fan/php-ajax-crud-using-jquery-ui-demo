@@ -23,7 +23,7 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Refactor PHP files to classes
     - [x] Add namespacing and auto-loading
 - [x] Move jQuery script out of index.html into own file in js directory
-- [ ] Refactor PHP classes to API endpoints
+- [x] Refactor PHP classes to API endpoints
 - [ ] Refactor PHP to return JSON, move view logic from PHP files into jQuery
 - [ ] Updated to use the PDO prepared statements
 - [ ] Refactor jQuery (script.js)
