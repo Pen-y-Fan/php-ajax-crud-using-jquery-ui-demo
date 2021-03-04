@@ -22,10 +22,11 @@ The idea is to update the app to resemble an MVC framework.
     - [x] refactor PHP files for testing environment (add **config** to **.env**)
 - [x] Refactor PHP files to classes
     - [x] Add namespacing and auto-loading
-- [ ] Move jQuery script out of index.html into own file in js directory
+- [x] Move jQuery script out of index.html into own file in js directory
 - [ ] Refactor PHP classes to API endpoints
 - [ ] Refactor PHP to return JSON, move view logic from PHP files into jQuery
-- [ ] Refactor PHP PDO prepared statements
+- [ ] Updated to use the PDO prepared statements
+- [ ] Refactor jQuery (script.js)
 
 ## Requirements
 
