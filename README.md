@@ -20,8 +20,8 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Test SQLite in memory DB
 - [x] Add CRUD tests using SQLite in memory DB
     - [x] refactor PHP files for testing environment (add **config** to **.env**)
-- [ ] Refactor PHP files to classes
-    - [ ] Add namespacing and auto-loading
+- [x] Refactor PHP files to classes
+    - [x] Add namespacing and auto-loading
 - [ ] Move jQuery script out of index.html into own file in js directory
 - [ ] Refactor PHP classes to API endpoints
 - [ ] Refactor PHP to return JSON, move view logic from PHP files into jQuery
@@ -29,7 +29,7 @@ The idea is to update the app to resemble an MVC framework.
 
 ## Requirements
 
-- PHP 5.6+
+- PHP 7.1+
 - Apache
 - MySQL
 

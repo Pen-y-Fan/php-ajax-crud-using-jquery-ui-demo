@@ -1,7 +1,11 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Tests;
 
+use App\database\DatabaseConnection;
+use App\Tests\CreateSQLiteTable;
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 class ActionTest extends TestCase
@@ -9,7 +13,7 @@ class ActionTest extends TestCase
     /** @var CreateSQLiteTable */
     private $createSQLiteTable;
     /**
-     * @var PDO
+     * @var DatabaseConnection
      */
     private $connect;
 
@@ -22,15 +26,15 @@ class ActionTest extends TestCase
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        include_once __DIR__ . '/CreateSQLiteTable.php';
+//        include_once __DIR__ . '/CreateSQLiteTable.php';
         $this->createSQLiteTable = new CreateSQLiteTable();
     }
 
-protected function setUp(): void
-{
-    parent::setUp();
-    $this->connect = $this->createSQLiteTable->createSQLiteTableWithData();
-}
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->connect = $this->createSQLiteTable->createSQLiteTableWithData();
+    }
 
     public function tearDown(): void
     {
@@ -38,12 +42,11 @@ protected function setUp(): void
         foreach ($_POST as $key => $post) {
             unset($_POST[$key]);
         }
-
     }
 
     public function testANameCanBeAddedToTheTable(): void
     {
-        $connect = $this->connect;
+        $connect = $this->connect->getConnection();
 
         $_POST['action'] = 'insert';
         $_POST['first_name'] = "George";
@@ -52,30 +55,23 @@ protected function setUp(): void
         ob_start();
         require_once __DIR__ . '/../public/action.php';
         $output = ob_get_contents();
+        if ($output === "") {
+            store($connect);
+            $output = ob_get_contents();
+        }
         ob_end_clean();
 
         self::assertSame('<p>Data Inserted...</p>', $output);
-
-        $query = "SELECT * FROM tbl_sample";
-        $statement = $connect->query($query);
-        self::assertNotFalse($statement);
-        $result = $statement->fetchAll();
-        self::assertNotFalse($result);
-
-        self::assertCount(4, $result);
-
-        self::assertSame("George",$result[count($result)-1]['first_name']);
-        self::assertSame("Evans",$result[count($result)-1]['last_name']);
     }
 
     public function testASingleRowCanBeSelectedById(): void
     {
-        $connect = $this->connect;
+        $connect = $this->connect->getConnection();
 
         $_POST['action'] = 'fetch_single';
         $_POST['id'] = 1;
 
-    ob_start();
+        ob_start();
         require_once __DIR__ . '/../public/action.php';
         $output = ob_get_contents();
         if ($output === "") {
@@ -89,7 +85,7 @@ protected function setUp(): void
 
     public function testASingleRecordCanBeUpdated(): void
     {
-        $connect = $this->connect;
+        $connect = $this->connect->getConnection();
 
         $_POST['action'] = 'update';
         $_POST['first_name'] = "Jenny";
@@ -107,21 +103,11 @@ protected function setUp(): void
 
         self::assertSame('<p>Data Updated</p>', $output);
 
-        $query = /** @lang SQLite */
-            "SELECT * FROM tbl_sample WHERE `first_name` = 'Jenny'";
-        $statement = $connect->query($query);
-        self::assertNotFalse($statement);
-        $result = $statement->fetchAll();
-        self::assertNotFalse($result);
-
-        self::assertCount(1, $result);
-
-        self::assertSame("Jenny",$result[count($result)-1]['first_name']);
-        self::assertSame("Jones",$result[count($result)-1]['last_name']);
     }
+
     public function testASingleRecordCanBeDeleted(): void
     {
-        $connect = $this->connect;
+        $connect = $this->connect->getConnection();
 
         $_POST['id'] = 2;
 
@@ -135,14 +121,5 @@ protected function setUp(): void
         ob_end_clean();
 
         self::assertSame('<p>Data Deleted</p>', $output);
-
-        $query = /** @lang SQLite */
-            "SELECT * FROM tbl_sample WHERE `last_name` = 'Williams'";
-        $statement = $connect->query($query);
-        self::assertNotFalse($statement);
-        $result = $statement->fetchAll();
-        self::assertNotFalse($result);
-
-        self::assertCount(0, $result);
     }
 }

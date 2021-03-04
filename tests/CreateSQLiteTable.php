@@ -1,20 +1,24 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Tests;
+
+use App\database\DatabaseConnection;
+use PDO;
+use PDOException;
 
 class CreateSQLiteTable
 {
 
-    public function createSQLiteTableWithData(): PDO
+    public function createSQLiteTableWithData(): DatabaseConnection
     {
         putenv('APP_ENV=TESTING');
-        include(__DIR__ . '/../database_connection.php');
-
+//        include(__DIR__ . '/../database_connection.php');
+        $database = new DatabaseConnection();
         $dropTable_SQL = /** @lang SQLite */
             "DROP TABLE IF EXISTS tbl_sample;";
 
-        /** @var PDO $connect */
-        $connect->exec($dropTable_SQL);
+        $database->getConnection()->exec($dropTable_SQL);
 
         $createTable_SQL = /** @lang SQLite */
             <<<SQL
@@ -27,7 +31,7 @@ class CreateSQLiteTable
             );
 SQL;
 
-        $connect->exec($createTable_SQL);
+        $database->getConnection()->exec($createTable_SQL);
 
         $table_SQLinsert = /** @lang SQLite */
             <<<SQL
@@ -38,7 +42,7 @@ SQL;
         $firstName = '';
         $lastName = '';
 
-        $stmt = $connect->prepare($table_SQLinsert);
+        $stmt = $database->getConnection()->prepare($table_SQLinsert);
         $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR, 255);
         $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR, 255);
 
@@ -68,6 +72,6 @@ SQL;
                 exit;
             }
         }
-        return $connect;
+        return $database;
     }
 }

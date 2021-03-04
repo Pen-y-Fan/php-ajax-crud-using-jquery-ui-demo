@@ -9,6 +9,18 @@
         "ext-pdo": "*"
     },
     "require": {
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
     }
+
 }

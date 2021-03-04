@@ -1,38 +1,32 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Tests;
 
+use PHPUnit\Framework\Error;
 use PHPUnit\Framework\TestCase;
 
 class FetchTest extends TestCase
 {
-    /** @var CreateSQLiteTable */
-    private $createSQLiteTable;
-
-    /**
-     * FetchTest constructor.
-     * @param string|null $name
-     * @param array<mixed> $data
-     * @param string $dataName
-     */
-    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    public function tearDown(): void
     {
-        parent::__construct($name, $data, $dataName);
-        include_once __DIR__ . '/CreateSQLiteTable.php';
-        $this->createSQLiteTable = new CreateSQLiteTable();
+        parent::tearDown();
+        foreach ($_POST as $key => $post) {
+            unset($_POST[$key]);
+        }
     }
 
     public function testFetchOutputsTheTableOfUsers(): void
     {
-        $connect = $this->createSQLiteTable->createSQLiteTableWithData();
+        putenv('APP_ENV=TESTING');
 
         ob_start();
-        require_once __DIR__ . '/../public/fetch.php';
+        require_once __DIR__ . '/../public/api/index.php';
         $output = ob_get_contents();
         ob_end_clean();
 
         if ($output === false) {
-            throw new Error('Unable to test output of fetch.php');
+            throw new Error('Unable to test output of api/index.php');
         }
 
         self::assertStringContainsString('<td width="40%">Fred</td>', $output);
@@ -47,76 +41,22 @@ class FetchTest extends TestCase
         self::assertStringContainsString('class="btn btn-danger btn-xs delete"', $output);
     }
 
-    private function expected(): string
+    public function testShow(): void
     {
-        return <<<'HTML'
+        putenv('APP_ENV=TESTING');
 
-<table class="table table-striped table-bordered">
-	<tr>
-		<th>First Name</th>
-		<th>Last Name</th>
-		<th>Edit</th>
-		<th>Delete</th>
-	</tr>
+        $_POST['action'] = 'fetch_single';
+        $_POST['id'] = 1;
 
-		<tr>
-			<td width="40%">Fred</td>
-			<td width="40%">Bloggs</td>
-			<td width="10%">
-				<button
-				type="button"
-				name="edit"
-				class="btn btn-primary btn-xs edit"
-				id="1">Edit</button>
-			</td>
-			<td width="10%">
-				<button
-				type="button"
-				name="delete"
-				class="btn btn-danger btn-xs delete"
-				id="1">Delete</button>
-			</td>
-		</tr>
 
-		<tr>
-			<td width="40%">David</td>
-			<td width="40%">Williams</td>
-			<td width="10%">
-				<button
-				type="button"
-				name="edit"
-				class="btn btn-primary btn-xs edit"
-				id="2">Edit</button>
-			</td>
-			<td width="10%">
-				<button
-				type="button"
-				name="delete"
-				class="btn btn-danger btn-xs delete"
-				id="2">Delete</button>
-			</td>
-		</tr>
+        ob_start();
+        require_once __DIR__ . '/../public/api/show/index.php';
+        $output = ob_get_contents();
+        ob_end_clean();
 
-		<tr>
-			<td width="40%">John</td>
-			<td width="40%">Smith</td>
-			<td width="10%">
-				<button
-				type="button"
-				name="edit"
-				class="btn btn-primary btn-xs edit"
-				id="3">Edit</button>
-			</td>
-			<td width="10%">
-				<button
-				type="button"
-				name="delete"
-				class="btn btn-danger btn-xs delete"
-				id="3">Delete</button>
-			</td>
-		</tr>
-		</table>
-HTML;
+        self::assertNotFalse($output, 'Unable to test output of api/show/index.php');
+
+        self::assertSame('{"id":"1","first_name":"Fred","last_name":"Bloggs"}', $output);
     }
 }
 

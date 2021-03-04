@@ -5,8 +5,8 @@ includes:
 parameters:
     paths:
         - public
-#        - src
-#        - tests
+        - src
+        - tests
     excludePaths:
         # config file for Easy Coding Standard, not a project file
         - ./ecs.php
@@ -26,10 +26,3 @@ parameters:
         -
             message: '#Cannot call method prepare\(\) on null.#'
             path: build_db.php
-        -
-            message: '#Undefined variable: \$connect#'
-            path: tests/CreateSQLiteTable.php
-        -
-            message: '#Variable \$connect in PHPDoc tag @var does not exist.#'
-            path: tests/CreateSQLiteTable.php
-
