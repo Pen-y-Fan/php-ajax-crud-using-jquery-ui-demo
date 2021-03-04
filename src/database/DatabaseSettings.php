@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\database;
@@ -11,22 +12,27 @@ class DatabaseSettings
      * @var array<mixed>
      */
     private $dbOptions;
+
     /**
      * @var string
      */
     private $dbHost;
+
     /**
      * @var string
      */
     private $dbName;
+
     /**
      * @var string
      */
     private $dbUser;
+
     /**
      * @var string
      */
     private $dbCharset;
+
     /**
      * @var string
      */
@@ -34,7 +40,7 @@ class DatabaseSettings
 
     public function __construct()
     {
-        $ini_array = parse_ini_file(__DIR__ . "/../../.env");
+        $ini_array = parse_ini_file(__DIR__ . '/../../.env');
 
         if ($ini_array !== false) {
             foreach ($ini_array as $key => $value) {
@@ -68,8 +74,7 @@ class DatabaseSettings
             $this->dbPassword = getenv('DATABASE_PASSWORD');
         }
 
-
-        $this->dbCharset = "utf8mb4";
+        $this->dbCharset = 'utf8mb4';
 
         $this->dbOptions = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -82,7 +87,6 @@ class DatabaseSettings
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
             ];
         }
-
     }
 
     public function getDbPassword(): string
@@ -117,6 +121,4 @@ class DatabaseSettings
     {
         return $this->dbCharset;
     }
-
-
 }

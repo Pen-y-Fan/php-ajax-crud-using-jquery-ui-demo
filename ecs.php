@@ -17,8 +17,8 @@ return static function (ContainerConfigurator $containerConfigurator) {
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::PATHS, [
         __DIR__ . '/public',
-        #__DIR__ . '/src',
-        #__DIR__ . '/tests',
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
     ]);
 
     $parameters->set(Option::SETS, [

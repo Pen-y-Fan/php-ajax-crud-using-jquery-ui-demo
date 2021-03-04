@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -9,14 +10,13 @@ use PDOException;
 
 class CreateSQLiteTable
 {
-
     public function createSQLiteTableWithData(): DatabaseConnection
     {
         putenv('APP_ENV=TESTING');
 //        include(__DIR__ . '/../database_connection.php');
         $database = new DatabaseConnection();
         $dropTable_SQL = /** @lang SQLite */
-            "DROP TABLE IF EXISTS tbl_sample;";
+            'DROP TABLE IF EXISTS tbl_sample;';
 
         $database->getConnection()->exec($dropTable_SQL);
 
@@ -49,15 +49,15 @@ SQL;
         $names = [
             [
                 'firstName' => 'Fred',
-                'lastName' => 'Bloggs'
+                'lastName' => 'Bloggs',
             ],
             [
                 'firstName' => 'David',
-                'lastName' => 'Williams'
+                'lastName' => 'Williams',
             ],
             [
                 'firstName' => 'John',
-                'lastName' => 'Smith'
+                'lastName' => 'Smith',
             ],
         ];
 
@@ -67,8 +67,7 @@ SQL;
                 $lastName = $name['lastName'];
                 $stmt->execute();
             } catch (PDOException $e) {
-                echo "Error adding name" . PHP_EOL . $e->getMessage();
-                print_r($name);
+                echo 'Error adding name' . $name['firstName'] . PHP_EOL . $e->getMessage();
                 exit;
             }
         }

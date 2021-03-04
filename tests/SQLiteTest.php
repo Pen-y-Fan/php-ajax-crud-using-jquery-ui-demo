@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 
@@ -8,9 +9,8 @@ class SQLiteTest extends TestCase
 {
     public function testPDOSqlExtensionIsLoaded(): void
     {
-        self::assertTrue(extension_loaded("pdo_sqlite"));
+        self::assertTrue(extension_loaded('pdo_sqlite'));
     }
-
 
     public function testSQLiteCanBeCreated(): void
     {
@@ -24,13 +24,14 @@ class SQLiteTest extends TestCase
         $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $connect->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-        $createTable_SQL = <<<SQL
-CREATE TABLE tbl_sample
-(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "first_name" TEXT,
-    "last_name" TEXT
-);
+        $createTable_SQL = /** @lang SQLite */
+            <<<SQL
+            CREATE TABLE tbl_sample
+            (
+                "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+                "first_name" TEXT,
+                "last_name" TEXT
+            );
 SQL;
 
         $connect->exec($createTable_SQL);
@@ -39,22 +40,21 @@ SQL;
         $names = [
             [
                 'firstName' => 'Fred ',
-                'lastName' => 'Bloggs 😀'
+                'lastName' => 'Bloggs 😀',
             ],
             [
                 'firstName' => 'David',
-                'lastName' => 'Williams'
+                'lastName' => 'Williams',
             ],
             [
                 'firstName' => 'John',
-                'lastName' => 'Smith 😍'
+                'lastName' => 'Smith 😍',
             ],
         ];
 
-
         // Prepare INSERT statement to SQLite3 memory db
-        $insert = "INSERT INTO tbl_sample (first_name, last_name)
-                VALUES (:firstname, :lastname)";
+        $insert = 'INSERT INTO tbl_sample (first_name, last_name)
+                VALUES (:firstname, :lastname)';
         $stmt = $connect->prepare($insert);
 
         // Loop thru all data from messages table
@@ -74,10 +74,9 @@ SQL;
         $result = $sth->fetchAll();
 
         self::assertIsArray($result);
-        $connect->exec("DROP TABLE `tbl_sample`");
+        $connect->exec('DROP TABLE `tbl_sample`');
 
         $postDropResult = $sth->fetchAll();
-
 
         // Close memory db connection
         $connect = null;
@@ -86,7 +85,7 @@ SQL;
         $count = count($names);
 
         for ($i = 0; $i < $count; $i++) {
-            self::assertSame($i + 1, (int)$result[$i]['id']);
+            self::assertSame($i + 1, (int) $result[$i]['id']);
             self::assertSame($names[$i]['firstName'], $result[$i]['first_name']);
             self::assertSame($names[$i]['lastName'], $result[$i]['last_name']);
         }

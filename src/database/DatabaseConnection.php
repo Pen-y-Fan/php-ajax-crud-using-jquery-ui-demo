@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\database;
@@ -23,7 +24,7 @@ class DatabaseConnection
                 $this->connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->connect->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
-                die("Error unable to connect: <br/>" . $e->getMessage());
+                die('Error unable to connect: <br/>' . $e->getMessage());
             }
         } else {
             // Test connection to the database
@@ -37,7 +38,7 @@ class DatabaseConnection
                 $this->connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->connect->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
-                die("Error unable to connect: <br/>" . $e->getMessage());
+                die('Error unable to connect: <br/>' . $e->getMessage());
             }
         }
     }
@@ -47,4 +48,3 @@ class DatabaseConnection
         return $this->connect;
     }
 }
-

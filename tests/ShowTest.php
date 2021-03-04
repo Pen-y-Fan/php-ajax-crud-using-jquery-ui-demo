@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -32,4 +33,3 @@ class ShowTest extends TestCase
         self::assertSame('[{"id":"1","first_name":"Fred","last_name":"Bloggs"}]', $output);
     }
 }
-

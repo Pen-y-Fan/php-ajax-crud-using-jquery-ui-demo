@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -21,22 +22,17 @@ class StoreTest extends TestCase
         putenv('APP_ENV=TESTING');
 
         $_POST['action'] = 'insert';
-        $_POST['first_name'] = "George";
-        $_POST['last_name'] = "Evans";
+        $_POST['first_name'] = 'George';
+        $_POST['last_name'] = 'Evans';
 
         ob_start();
         require __DIR__ . '/../public/api/store/index.php';
-        $output = ob_get_contents();
-        ob_end_clean();
+        $output = ob_get_clean();
 
         if ($output === false) {
             throw new Error('Unable to test output of api/store/index.php');
         }
 
         self::assertSame('<p>Data Inserted...</p>', $output);
-
-
     }
-
 }
-

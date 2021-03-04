@@ -29,7 +29,6 @@ class PeopleController
     }
 
     /**
-     * @param int $id
      * @return array<mixed>
      */
     public function show(int $id): array

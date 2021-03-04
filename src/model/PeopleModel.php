@@ -16,7 +16,7 @@ class PeopleModel
 
     public function __construct(?DatabaseConnection $database = null)
     {
-        if (is_null($database)){
+        if ($database === null) {
             $this->database = new DatabaseConnection();
         } else {
             $this->database = $database;
@@ -34,7 +34,9 @@ class PeopleModel
         $statement->execute();
         $result = $statement->fetchAll();
         if ($result === false) {
-            return ["error" => "The result was false"];
+            return [
+                'error' => 'The result was false',
+            ];
         }
         return $result;
     }
@@ -54,7 +56,9 @@ class PeopleModel
 //        }
         $result = $statement->fetchAll();
         if ($result === false) {
-            return ["error" => "The result was false"];
+            return [
+                'error' => 'The result was false',
+            ];
         }
         return $result;
     }

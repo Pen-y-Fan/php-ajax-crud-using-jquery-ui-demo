@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -24,12 +25,10 @@ class DeleteTest extends TestCase
 
         ob_start();
         require_once __DIR__ . '/../public/api/delete/index.php';
-        $output = ob_get_contents();
-        ob_end_clean();
+        $output = ob_get_clean();
 
         self::assertNotFalse($output, 'Unable to test output of api/delete/index.php');
 
         self::assertSame('<p>Data Deleted</p>', $output);
     }
 }
-
