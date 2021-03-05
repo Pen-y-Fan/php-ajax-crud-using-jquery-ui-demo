@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use PHPUnit\Framework\Error;
 use PHPUnit\Framework\TestCase;
 
 class IndexTest extends TestCase
@@ -25,19 +24,12 @@ class IndexTest extends TestCase
         require_once __DIR__ . '/../public/api/index.php';
         $output = ob_get_clean();
 
-        if ($output === false) {
-            throw new Error('Unable to test output of api/index.php');
-        }
+        self::assertNotFalse($output, 'Unable to test output of api/index.php');
 
-        self::assertStringContainsString('<td width="40%">Fred</td>', $output);
-        self::assertStringContainsString('<td width="40%">Bloggs</td>', $output);
-        self::assertStringContainsString('<td width="40%">David</td>', $output);
-        self::assertStringContainsString('<td width="40%">Williams</td>', $output);
-        self::assertStringContainsString('<td width="40%">John</td>', $output);
-        self::assertStringContainsString('<td width="40%">Smith</td>', $output);
-        self::assertStringContainsString('id="3">Delete</button>', $output);
-        self::assertStringContainsString('id="3">Edit</button>', $output);
-        self::assertStringContainsString('class="btn btn-primary btn-xs edit"', $output);
-        self::assertStringContainsString('class="btn btn-danger btn-xs delete"', $output);
+        $expected = '[{"id":"1","first_name":"Fred","last_name":"Bloggs"},';
+        $expected .= '{"id":"2","first_name":"David","last_name":"Williams"},';
+        $expected .= '{"id":"3","first_name":"John","last_name":"Smith"}]';
+
+        self::assertSame($expected, $output);
     }
 }

@@ -7,7 +7,40 @@
       url: "api/index.php",
       method: "GET",
       success: function (data) {
-        $('#user_data').html(data);
+        var output = "";
+        var results = JSON.parse(data);
+        if (results.length > 0 && results !== false) {
+          results.forEach(function (row) {
+            output += `
+            <tr>
+              <td width="40%">${row['first_name']}</td>
+              <td width="40%">${row['last_name']}</td>
+              <td width="10%">
+                <button
+                  type="button"
+                  name="edit"
+                  class="btn btn-primary btn-xs edit"
+                  id="${row['id']} ">Edit</button>
+              </td>
+              <td width="10%">
+                <button
+                  type="button"
+                  name="delete"
+                  class="btn btn-danger btn-xs delete"
+                  id=" ${row['id']}">Delete</button>
+              </td>
+            </tr>
+          `
+          });
+        } else {
+          output += `
+          <tr>
+            <td colspan="4" class="text-center">Data not found</td>
+          </tr>
+          `;
+        }
+        $('tbody').html(output);
+        // $('#user_data').html(data);
       }
     });
   }
@@ -52,7 +85,7 @@
     if (error_first_name != '' || error_last_name != '') {
       return false;
     } else {
-      $('#form_action').prop( "disabled", true );
+      $('#form_action').prop("disabled", true);
       var form_data = $(this).serialize();
       var action = $('#action').val();
       var api = action == "update" ? "/api/update/index.php" : "/api/store/index.php";
@@ -78,7 +111,6 @@
 
   $(document).on('click', '.edit', function () {
     var id = $(this).attr('id');
-    var action = 'fetch_single';
     $.ajax({
       url: "/api/show/index.php",
       method: "GET",
