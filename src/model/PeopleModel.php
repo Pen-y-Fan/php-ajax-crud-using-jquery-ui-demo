@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\model;
 
 use App\database\DatabaseConnection;
+use PDO;
 use PDOStatement;
 
 class PeopleModel
@@ -30,13 +31,13 @@ class PeopleModel
     {
         $query = /** @lang MySQL|SQLite */
             'SELECT * FROM tbl_sample';
-        $statement = $this->database->getConnection()->prepare($query);
-        $statement->execute();
+        $statement = $this->database->getConnection()->query($query);
+        if ($statement === false) {
+            return [];
+        }
         $result = $statement->fetchAll();
         if ($result === false) {
-            return [
-                'error' => 'The result was false',
-            ];
+            return [];
         }
         return $result;
     }
@@ -47,13 +48,12 @@ class PeopleModel
     public function selectById(int $id): array
     {
         $query = /** @lang MySQL|SQLite */
-            "SELECT * FROM tbl_sample WHERE id = '" . $id . "'";
+            'SELECT * FROM tbl_sample WHERE id = :id ';
         $statement = $this->database->getConnection()->prepare($query);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
         /** @var PDOStatement $statement */
         $statement->execute();
-//        if ($statement === false) {
-//            return ["error" => "There was an error with the statement"];
-//        }
+
         $result = $statement->fetchAll();
         if ($result === false) {
             return [
@@ -63,35 +63,44 @@ class PeopleModel
         return $result;
     }
 
-    public function insert(string $firstName, string $lastName): void
+    public function insert(string $firstName, string $lastName): bool
     {
-        $query = /** @lang MySQL|SQLite */
-            "
-		INSERT INTO tbl_sample (first_name, last_name)
-		VALUES ('" . $firstName . "', '" . $lastName . "')
-		";
-        $statement = $this->database->getConnection()->prepare($query);
-        $statement->execute();
+        $insert = /** @lang MySQL|SQLite */
+            <<<SQL
+                INSERT INTO tbl_sample (`first_name`, `last_name`)
+                VALUES (:firstName, :lastName );
+SQL;
+
+        $statement = $this->database->getConnection()->prepare($insert);
+        $statement->bindParam(':firstName', $firstName, PDO::PARAM_STR, 255);
+        $statement->bindParam(':lastName', $lastName, PDO::PARAM_STR, 255);
+
+        return $statement->execute();
     }
 
-    public function update(int $id, string $first_name, string $last_name): void
+    public function update(int $id, string $firstName, string $lastName): bool
     {
         $query = /** @lang MySQL|SQLite */
-            "
+            '
 		UPDATE tbl_sample
-		SET first_name = '" . $first_name . "',
-		last_name = '" . $last_name . "'
-		WHERE id = '" . $id . "'
-		";
+		SET first_name = :firstName ,
+		last_name = :lastName
+		WHERE id = :id
+		';
+
         $statement = $this->database->getConnection()->prepare($query);
-        $statement->execute();
+        $statement->bindParam(':firstName', $firstName, PDO::PARAM_STR, 255);
+        $statement->bindParam(':lastName', $lastName, PDO::PARAM_STR, 255);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        return $statement->execute();
     }
 
-    public function deleteById(int $id): void
+    public function deleteById(int $id): bool
     {
         $query = /** @lang MySQL|SQLite */
-            "DELETE FROM tbl_sample WHERE id = '" . $id . "'";
+            'DELETE FROM tbl_sample WHERE id = :id ';
         $statement = $this->database->getConnection()->prepare($query);
-        $statement->execute();
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        return $statement->execute();
     }
 }

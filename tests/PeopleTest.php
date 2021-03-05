@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\model\PeopleModel;
+use PDO;
+use PDOStatement;
 use PHPUnit\Framework\TestCase;
 
 class PeopleTest extends TestCase
@@ -57,6 +59,9 @@ class PeopleTest extends TestCase
         self::assertSame('Smith', $john[0]['last_name']);
     }
 
+    /**
+     * @noinspection UnknownInspectionInspection
+     */
     public function testItCanAddAPerson(): void
     {
         $database = $this->createSQLiteTable->createSQLiteTableWithData();
@@ -66,8 +71,11 @@ class PeopleTest extends TestCase
         $_POST['last_name'] = 'Evans';
 
         $peopleModel = new PeopleModel($database);
-        $peopleModel->insert('George', 'Evans');
+        $result = $peopleModel->insert('George', 'Evans');
 
+        self::assertTrue($result);
+
+        /** @noinspection SqlResolve */
         $sql = /** @lang SQLite */
             'SELECT * FROM tbl_sample';
         $statement = $database->getConnection()->query($sql);
@@ -90,13 +98,41 @@ class PeopleTest extends TestCase
         $id = 1;
 
         $peopleModel = new PeopleModel($database);
-        $peopleModel->update($id, $firstName, $lastName);
+        $update = $peopleModel->update($id, $firstName, $lastName);
+        self::assertTrue($update);
 
-        $result = $peopleModel->selectById($id);
-        self::assertCount(1, $result);
+        $confirmation = $peopleModel->selectById($id);
 
-        self::assertSame($firstName, $result[count($result) - 1]['first_name']);
-        self::assertSame($lastName, $result[count($result) - 1]['last_name']);
+        self::assertCount(1, $confirmation);
+        self::assertSame($firstName, $confirmation[0]['first_name']);
+        self::assertSame($lastName, $confirmation[0]['last_name']);
+    }
+
+    public function testItCanNotUpdateWithInvalidId(): void
+    {
+        $database = $this->createSQLiteTable->createSQLiteTableWithData();
+
+        $firstName = 'Jenny';
+        $lastName = 'Jones';
+        $id = 999;
+
+        $peopleModel = new PeopleModel($database);
+        $update = $peopleModel->update($id, $firstName, $lastName);
+
+        // I expected this to be false - must be false for another reason - possibly PDO::ATTR_ERRMODE
+        self::assertTrue($update);
+
+        $query = /** @lang MySQL|SQLite */
+            'SELECT * FROM tbl_sample WHERE first_name = :firstName ';
+        $statement = $database->getConnection()->prepare($query);
+        $statement->bindParam(':firstName', $firstName, PDO::PARAM_STR, 255);
+        /** @var PDOStatement $statement */
+        $statement->execute();
+
+        $result = $statement->fetchAll();
+
+        self::assertNotFalse($result);
+        self::assertCount(0, $result);
     }
 
     public function testItCanDeleteAPersonById(): void
@@ -106,12 +142,32 @@ class PeopleTest extends TestCase
         $id = 3;
 
         $peopleModel = new PeopleModel($database);
-        $peopleModel->deleteById($id);
+        $result = $peopleModel->deleteById($id);
+
+        self::assertTrue($result);
+
+        $confirmation = $peopleModel->selectAll();
+        self::assertCount(2, $confirmation);
+
+        self::assertSame('David', $confirmation[count($confirmation) - 1]['first_name']);
+        self::assertSame('Williams', $confirmation[count($confirmation) - 1]['last_name']);
+    }
+
+    public function testItCanNotDeleteAnInvalidId(): void
+    {
+        $database = $this->createSQLiteTable->createSQLiteTableWithData();
+        $id = 999;
+
+        $peopleModel = new PeopleModel($database);
+        $result = $peopleModel->deleteById($id);
+
+        // I expected this to be false - must be false for another reason - possibly PDO::ATTR_ERRMODE
+        self::assertTrue($result);
 
         $result = $peopleModel->selectAll();
-        self::assertCount(2, $result);
+        self::assertCount(3, $result);
 
-        self::assertSame('David', $result[count($result) - 1]['first_name']);
-        self::assertSame('Williams', $result[count($result) - 1]['last_name']);
+        self::assertSame('John', $result[count($result) - 1]['first_name']);
+        self::assertSame('Smith', $result[count($result) - 1]['last_name']);
     }
 }

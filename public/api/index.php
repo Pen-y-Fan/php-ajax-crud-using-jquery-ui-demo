@@ -9,7 +9,7 @@ include_once(__DIR__ . '/../../vendor/autoload.php');
 use App\controller\PeopleController;
 use App\Tests\CreateSQLiteTable;
 
-if (getenv('APP_ENV') && getenv('APP_ENV') === 'TESTING') {
+if (getenv('APP_ENV') === 'TESTING') {
     $createSQLiteTable = new CreateSQLiteTable();
     $database = $createSQLiteTable->createSQLiteTableWithData();
     $people = new PeopleController($database);

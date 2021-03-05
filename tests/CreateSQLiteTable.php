@@ -13,7 +13,6 @@ class CreateSQLiteTable
     public function createSQLiteTableWithData(): DatabaseConnection
     {
         putenv('APP_ENV=TESTING');
-//        include(__DIR__ . '/../database_connection.php');
         $database = new DatabaseConnection();
         $dropTable_SQL = /** @lang SQLite */
             'DROP TABLE IF EXISTS tbl_sample;';
@@ -33,7 +32,7 @@ SQL;
 
         $database->getConnection()->exec($createTable_SQL);
 
-        $table_SQLinsert = /** @lang SQLite */
+        $table_SQLinsert = /** @lang MySQL|SQLite */
             <<<SQL
             INSERT INTO tbl_sample (`first_name`, `last_name`)
             VALUES (:firstName, :lastName );

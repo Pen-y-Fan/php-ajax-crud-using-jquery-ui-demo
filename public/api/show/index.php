@@ -17,7 +17,7 @@ if (! isset($_GET['id'])) {
     exit;
 }
 
-if (getenv('APP_ENV') && getenv('APP_ENV') === 'TESTING') {
+if (getenv('APP_ENV') === 'TESTING') {
     $createSQLiteTable = new CreateSQLiteTable();
     $database = $createSQLiteTable->createSQLiteTableWithData();
     $people = new PeopleController($database);

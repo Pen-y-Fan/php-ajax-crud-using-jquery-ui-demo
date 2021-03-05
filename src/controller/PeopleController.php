@@ -37,21 +37,21 @@ class PeopleController
         return $people->selectById($id);
     }
 
-    public function store(string $firstName, string $lastName): void
+    public function store(string $firstName, string $lastName): bool
     {
         $people = new PeopleModel($this->database);
-        $people->insert($firstName, $lastName);
+        return $people->insert($firstName, $lastName);
     }
 
-    public function update(int $id, string $firstName, string $lastName): void
+    public function update(int $id, string $firstName, string $lastName): bool
     {
         $people = new PeopleModel($this->database);
-        $people->update($id, $firstName, $lastName);
+        return $people->update($id, $firstName, $lastName);
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): bool
     {
         $people = new PeopleModel($this->database);
-        $people->deleteById($id);
+        return $people->deleteById($id);
     }
 }
