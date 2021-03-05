@@ -1,46 +1,53 @@
 (function ($) {
 
-  load_data();
 
   function load_data() {
-    $.ajax({
+    $.get({
       url: "api/index.php",
-      method: "GET",
-      success: function (data) {
+      success: function (data, status) {
         var output = "";
-        var results = JSON.parse(data);
-        if (results.length > 0 && results !== false) {
-          results.forEach(function (row) {
+        if (status === 'success') {
+          // var results = data;
+          if (data.length > 0 && data !== false) {
+            data.forEach(function (row) {
+              output += `
+          <tr>
+            <td>${row['first_name']}</td>
+            <td>${row['last_name']}</td>
+            <td>
+              <button
+                type="button"
+                name="edit"
+                class="btn btn-primary btn-xs edit"
+                id="${row['id']} ">Edit</button>
+            </td>
+            <td>
+              <button
+                type="button"
+                name="delete"
+                class="btn btn-danger btn-xs delete"
+                id=" ${row['id']}">Delete</button>
+            </td>
+          </tr>
+        `
+            });
+          } else {
             output += `
-            <tr>
-              <td>${row['first_name']}</td>
-              <td>${row['last_name']}</td>
-              <td>
-                <button
-                  type="button"
-                  name="edit"
-                  class="btn btn-primary btn-xs edit"
-                  id="${row['id']} ">Edit</button>
-              </td>
-              <td>
-                <button
-                  type="button"
-                  name="delete"
-                  class="btn btn-danger btn-xs delete"
-                  id=" ${row['id']}">Delete</button>
-              </td>
-            </tr>
-          `
-          });
+        <tr>
+          <td colspan="4" class="text-center">Data not found</td>
+        </tr>
+        `;
+          }
         } else {
           output += `
-          <tr>
-            <td colspan="4" class="text-center">Data not found</td>
-          </tr>
-          `;
+        <tr>
+          <td colspan="4" class="text-center">Something went wrong, status ${status}</td>
+        </tr>
+        `;
         }
         $('tbody').html(output);
-      }
+      },
+      dataType: "json",
     });
   }
 
@@ -110,10 +117,12 @@
           $actionAlert.dialog('open');
           load_data();
           $('#form_action').prop('disabled', false);
-        }
+        },
+        error: function (request, textStatus, errorThrown) {
+          displayError(request, textStatus, errorThrown);
+        },
       });
     }
-
   });
 
   $('#action_alert').dialog({
@@ -146,9 +155,21 @@
         var $userDialog = $('#user_dialog');
         $userDialog.dialog('option', 'title', 'Edit Data');
         $userDialog.dialog('open');
-      }
+      },
+      error: function (request, textStatus, errorThrown) {
+        displayError(request, textStatus, errorThrown);
+      },
     });
   });
+
+  function displayError(request, textStatus, errorThrown) {
+    console.log(request, textStatus, errorThrown);
+    var error = JSON.parse(request.responseText)
+    var $actionAlert = $('#action_alert')
+    $actionAlert.html(error.error);
+    $actionAlert.dialog('open');
+    load_data();
+  }
 
   $('#delete_confirmation').dialog({
     autoOpen: false,
@@ -167,7 +188,10 @@
             $actionAlert.html(data);
             $actionAlert.dialog('open');
             load_data();
-          }
+          },
+          error: function (request, textStatus, errorThrown) {
+            displayError(request, textStatus, errorThrown);
+          },
         });
       },
       "Cancel": function () {
@@ -180,5 +204,7 @@
     var id = $(this).attr("id");
     $('#delete_confirmation').data('id', id).dialog('open');
   });
+
+  load_data();
 
 })(jQuery);
