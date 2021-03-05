@@ -69,4 +69,4 @@ grumphp:
 toolbox:
 	docker run --init -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project jakzal/phpqa:1.52-php7.4-alpine sh
 
-# jakzal/phpqa:1.50-php8.0-alpine
+# jakzal/phpqa:1.52-php8.0-alpine
