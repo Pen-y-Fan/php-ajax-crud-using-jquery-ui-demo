@@ -13,16 +13,16 @@
           results.forEach(function (row) {
             output += `
             <tr>
-              <td width="40%">${row['first_name']}</td>
-              <td width="40%">${row['last_name']}</td>
-              <td width="10%">
+              <td>${row['first_name']}</td>
+              <td>${row['last_name']}</td>
+              <td>
                 <button
                   type="button"
                   name="edit"
                   class="btn btn-primary btn-xs edit"
                   id="${row['id']} ">Edit</button>
               </td>
-              <td width="10%">
+              <td>
                 <button
                   type="button"
                   name="delete"
@@ -40,7 +40,6 @@
           `;
         }
         $('tbody').html(output);
-        // $('#user_data').html(data);
       }
     });
   }
@@ -50,53 +49,65 @@
     width: 400
   });
 
-  $('#add').click(function () {
-    $('#user_dialog').attr('title', 'Add Data');
+  $('#add').on('click', function () {
     $('#action').val('insert');
-    $('#form_action').val('Insert');
     $('#user_form')[0].reset();
-    $('#form_action').attr('disabled', false);
-    $("#user_dialog").dialog('open');
+
+    var $formAction = $('#form_action');
+    $formAction.val('Insert');
+    $formAction.attr('disabled', false);
+
+    $('#first_name').css('border-color', '');
+    $('#last_name').css('border-color', '');
+    $('#error_first_name').text('');
+    $('#error_last_name').text('');
+
+    var $userDialog = $('#user_dialog');
+    $userDialog.dialog('option', 'title', 'Add Data');
+    $userDialog.dialog('open');
   });
 
   $('#user_form').on('submit', function (event) {
     event.preventDefault();
-    var error_first_name = '';
-    var error_last_name = '';
-    if ($('#first_name').val() == '') {
+    var error_first_name;
+    var error_last_name;
+    var $firstName = $('#first_name')
+    if ($firstName.val() === '') {
       error_first_name = 'First Name is required';
       $('#error_first_name').text(error_first_name);
-      $('#first_name').css('border-color', '#cc0000');
+      $firstName.css('border-color', '#cc0000');
     } else {
       error_first_name = '';
       $('#error_first_name').text(error_first_name);
-      $('#first_name').css('border-color', '');
+      $firstName.css('border-color', '');
     }
-    if ($('#last_name').val() == '') {
+    var $lastName = $('#last_name')
+    if ($lastName.val() === '') {
       error_last_name = 'Last Name is required';
       $('#error_last_name').text(error_last_name);
-      $('#last_name').css('border-color', '#cc0000');
+      $lastName.css('border-color', '#cc0000');
     } else {
       error_last_name = '';
       $('#error_last_name').text(error_last_name);
-      $('#last_name').css('border-color', '');
+      $lastName.css('border-color', '');
     }
 
-    if (error_first_name != '' || error_last_name != '') {
+    if (error_first_name !== '' || error_last_name !== '') {
       return false;
     } else {
       $('#form_action').prop("disabled", true);
       var form_data = $(this).serialize();
       var action = $('#action').val();
-      var api = action == "update" ? "/api/update/index.php" : "/api/store/index.php";
+      var api = action === "update" ? "/api/update/index.php" : "/api/store/index.php";
       $.ajax({
         url: api,
         method: "POST",
         data: form_data,
         success: function (data) {
           $('#user_dialog').dialog('close');
-          $('#action_alert').html(data);
-          $('#action_alert').dialog('open');
+          var $actionAlert = $('#action_alert')
+          $actionAlert.html(data);
+          $actionAlert.dialog('open');
           load_data();
           $('#form_action').prop('disabled', false);
         }
@@ -117,13 +128,24 @@
       data: {id: id},
       dataType: "json",
       success: function (data) {
-        $('#first_name').val(data[0].first_name);
-        $('#last_name').val(data[0].last_name);
-        $('#user_dialog').attr('title', 'Edit Data');
+
+        var $firstName = $('#first_name');
+        $firstName.val(data[0].first_name);
+        $firstName.css('border-color', '');
+        $('#error_first_name').text('');
+
+        var $lastName = $('#last_name');
+        $lastName.val(data[0].last_name);
+        $lastName.css('border-color', '');
+        $('#error_last_name').text('');
+
         $('#action').val('update');
         $('#hidden_id').val(id);
         $('#form_action').val('Update');
-        $('#user_dialog').dialog('open');
+
+        var $userDialog = $('#user_dialog');
+        $userDialog.dialog('option', 'title', 'Edit Data');
+        $userDialog.dialog('open');
       }
     });
   });
@@ -132,7 +154,7 @@
     autoOpen: false,
     modal: true,
     buttons: {
-      Ok: function () {
+      "Yes": function () {
         var id = $(this).data('id');
         var action = 'delete';
         $.ajax({
@@ -141,13 +163,14 @@
           data: {id: id, action: action},
           success: function (data) {
             $('#delete_confirmation').dialog('close');
-            $('#action_alert').html(data);
-            $('#action_alert').dialog('open');
+            var $actionAlert = $('#action_alert')
+            $actionAlert.html(data);
+            $actionAlert.dialog('open');
             load_data();
           }
         });
       },
-      Cancel: function () {
+      "Cancel": function () {
         $(this).dialog('close');
       }
     }

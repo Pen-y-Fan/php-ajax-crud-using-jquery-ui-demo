@@ -26,7 +26,7 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Refactor PHP classes to API endpoints
 - [x] Refactor PHP to return JSON, move view logic from PHP files into jQuery
 - [x] Use the PDO prepared statements in the model class
-- [ ] Refactor jQuery (script.js)
+- [x] Refactor jQuery (script.js)
 
 ## Requirements
 

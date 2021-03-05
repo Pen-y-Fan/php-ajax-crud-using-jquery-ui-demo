@@ -10,7 +10,8 @@
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
   <title>PHP Ajax Crud using JQuery UI Dialog Box</title>
-  <link rel="stylesheet" href="./css/jquery-ui.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
@@ -27,10 +28,10 @@
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
-        <th class="text-center">First Name</th>
-        <th class="text-center">Last Name</th>
-        <th class="text-center">Edit</th>
-        <th class="text-center">Delete</th>
+        <th class="text-center" style="width: 40%">First Name</th>
+        <th class="text-center" style="width: 40%">Last Name</th>
+        <th class="text-center" style="width: 10%">Edit</th>
+        <th class="text-center" style="width: 10%">Delete</th>
       </tr>
       </thead>
       <tbody>
@@ -48,7 +49,7 @@
   </div>
 </div>
 
-<div id="user_dialog" title="Add Data">
+<div id="user_dialog" title="Data">
   <form method="post" id="user_form">
     <div class="form-group">
       <label for="first_name">Enter First Name</label>
@@ -75,9 +76,9 @@
   <p>Are you sure you want to Delete this data?</p>
 </div>
 
-<script src="./js/jquery-3.5.1.min.js"></script>
-<script src="./js/jquery-ui.min.js"></script>
-<script src="./js/script.js"></script>
+<script src="js/jquery-3.5.1.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
