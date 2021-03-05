@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+namespace App\Tests;
 
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 class SQLiteTest extends TestCase
@@ -55,20 +57,15 @@ SQL;
         // Prepare INSERT statement to SQLite3 memory db
         $insert = 'INSERT INTO tbl_sample (first_name, last_name)
                 VALUES (:firstname, :lastname)';
-        $stmt = $connect->prepare($insert);
 
-        // Loop thru all data from messages table
-        // and insert it to db
         foreach ($names as $key => $name) {
+            $stmt = $connect->prepare($insert);
             $stmt->bindValue(':firstname', $name['firstName']);
             $stmt->bindValue(':lastname', $name['lastName']);
-
-            // Execute statement
             $stmt->execute();
         }
-
         // Select all data from memory db messages table
-        $sth = $connect->query(/** @lang SQLite */ 'SELECT * FROM tbl_sample');
+        $sth = $connect->query(/** @lang MySQL|SQLite */ 'SELECT * FROM tbl_sample');
 
         self::assertIsObject($sth);
         $result = $sth->fetchAll();
