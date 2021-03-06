@@ -17,12 +17,12 @@ parameters:
     # TODO: These files will be refactored
     ignoreErrors:
         -
-            message: '#Variable \$\w+ might not be defined.#'
+            message: '#Variable \$\w+ might not be defined\.#'
             paths:
                 - database_connection.php
                 - public/fetch.php
                 - public/action.php
                 - build_db.php
         -
-            message: '#Cannot call method prepare\(\) on null.#'
+            message: '#Cannot call method prepare\(\) on null\.#'
             path: build_db.php

@@ -4,10 +4,8 @@
   function load_data() {
     $.get({
       url: "api/index.php",
-      success: function (data, status) {
+      success: function (data) {
         var output = "";
-        if (status === 'success') {
-          // var results = data;
           if (data.length > 0 && data !== false) {
             data.forEach(function (row) {
               output += `
@@ -34,21 +32,22 @@
           } else {
             output += `
         <tr>
-          <td colspan="4" class="text-center">Data not found</td>
+          <td colspan="4" class="text-center">No data found, click <strong>Add</strong> to add some 😀</td>
         </tr>
         `;
           }
-        } else {
-          output += `
-        <tr>
-          <td colspan="4" class="text-center">Something went wrong, status ${status}</td>
-        </tr>
-        `;
-        }
         $('tbody').html(output);
       },
       dataType: "json",
-    });
+    })
+      .fail(function() {
+        var output = `
+        <tr>
+          <td colspan="4" class="text-center">There was an error, please try again</tr>
+        </tr>
+        `;
+        $('tbody').html(output);
+      });
   }
 
   $("#user_dialog").dialog({
@@ -113,7 +112,8 @@
         success: function (data) {
           $('#user_dialog').dialog('close');
           var $actionAlert = $('#action_alert')
-          $actionAlert.html(data);
+          var result = JSON.parse(data)
+          $actionAlert.html(`<p>${result.data}</p>`);
           $actionAlert.dialog('open');
           load_data();
           $('#form_action').prop('disabled', false);
@@ -132,7 +132,7 @@
   $(document).on('click', '.edit', function () {
     var id = $(this).attr('id');
     $.ajax({
-      url: "/api/show/index.php",
+      url: "api/show/index.php",
       method: "GET",
       data: {id: id},
       dataType: "json",
@@ -179,13 +179,14 @@
         var id = $(this).data('id');
         var action = 'delete';
         $.ajax({
-          url: "/api/delete/index.php",
+          url: "api/delete/index.php",
           method: "POST",
           data: {id: id, action: action},
           success: function (data) {
             $('#delete_confirmation').dialog('close');
             var $actionAlert = $('#action_alert')
-            $actionAlert.html(data);
+            var result = JSON.parse(data)
+            $actionAlert.html(`<p>${result.data}</p>`);
             $actionAlert.dialog('open');
             load_data();
           },

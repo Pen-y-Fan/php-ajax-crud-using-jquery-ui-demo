@@ -20,6 +20,9 @@ class IndexTest extends TestCase
     {
         putenv('APP_ENV=TESTING');
 
+        $createSQLiteTable = new CreateSQLiteTable();
+        $database = $createSQLiteTable->createSQLiteTableWithData();
+
         ob_start();
         require_once __DIR__ . '/../public/api/index.php';
         $output = ob_get_clean();
