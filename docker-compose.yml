@@ -1,7 +1,8 @@
 version: "3"
 services:
   ajaxcrud:
-    build: ./
+    image: apachephp:local
+# build: ./
     labels:
       - "traefik.backend=ajaxcrud"
   #    - "traefik.frontend.rule=Host:ajaxcrud.docker.localhost"
@@ -12,11 +13,40 @@ services:
       - PHP_ERROR_REPORTING=E_ALL
       - PHP_DISPLAY_ERRORS=On
       - PHP_HTML_ERRORS=On
-      - PHP_XDEBUG_ENABLED=false
+      # Xdebug is disabled use ajaxcrudx for debugging
     networks:
       - default
     ports:
       - "8080:80"
+    volumes:
+      - ./:/app
+      - ./tmp-phpqa:/tmp
+    working_dir: /app
+    depends_on:
+      - database
+    # ADD in permission for setting system time to host system time
+    cap_add:
+      - SYS_TIME
+      - SYS_NICE
+
+# Enable Xdebug and use post 8081
+  ajaxcrudx:
+    image: apachephp:local
+    labels:
+      - "traefik.backend=ajaxcrudx"
+    #    - "traefik.frontend.rule=Host:ajaxcrud.docker.localhost"
+    environment:
+      - MYSQL_HOST=database
+      - APACHE_SERVER_NAME=ajaxcrudx.docker.localhost
+      - PHP_SHORT_OPEN_TAG=On
+      - PHP_ERROR_REPORTING=E_ALL
+      - PHP_DISPLAY_ERRORS=On
+      - PHP_HTML_ERRORS=On
+      - PHP_XDEBUG_ENABLED=On
+    networks:
+      - default
+    ports:
+      - "8081:80"
     volumes:
       - ./:/app
       - ./tmp-phpqa:/tmp

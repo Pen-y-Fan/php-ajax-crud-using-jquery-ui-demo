@@ -74,6 +74,9 @@ if [ ! -z "$PHP_XDEBUG_ENABLED" ]
 		echo 'xdebug.client_port=9003' >> /etc/php7/php.ini;
         echo 'xdebug.client_host=pop-os' >> /etc/php7/php.ini;
         echo 'xdebug.idekey=PHPSTORM' >> /etc/php7/php.ini;
+    else
+        echo "Disabling XDebug..."
+        rm /etc/php7/php.ini;
 fi
 
 # Start (ensure apache2 PID not left behind first) to stop auto start crashes if didn't shut down properly
