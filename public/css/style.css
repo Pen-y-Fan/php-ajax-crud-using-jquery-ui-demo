@@ -1,3 +1,7 @@
+body {
+    background-color: #222222;
+    color: #cccccc;
+}
 .form-group {
     margin-bottom: 0.5rem;
 }
