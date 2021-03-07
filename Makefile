@@ -78,5 +78,6 @@ toolbox:
 
 # jakzal/phpqa:1.52-php8.0-alpine
 
+.PHONY : cypress
 cypress:
 	docker run -it --rm -d -v $(shell pwd):/e2e -v /tmp/.X11-unix:/tmp/.X11-unix --net=host -w /e2e -e DISPLAY --entrypoint cypress cypress/included:6.6.0 open --project .
