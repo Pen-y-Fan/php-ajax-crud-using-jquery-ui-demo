@@ -1,0 +1,32 @@
+{
+  "name": "php-ajax-crud-using-jquery-ui-demo",
+  "version": "1.0.0",
+  "description": "php-ajax",
+  "main": "index.html",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pen-y-Fan/php-ajax-crud-using-jquery-ui-demo.git"
+  },
+  "keywords": [
+    "php",
+    "ajax",
+    "jquery",
+    "cypress"
+  ],
+  "author": "pen-y-fan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Pen-y-Fan/php-ajax-crud-using-jquery-ui-demo/issues"
+  },
+  "homepage": "https://github.com/Pen-y-Fan/php-ajax-crud-using-jquery-ui-demo#readme",
+  "devDependencies": {
+    "cypress": "^6.6.0"
+  }
+}
