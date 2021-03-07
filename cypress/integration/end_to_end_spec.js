@@ -1,6 +1,6 @@
 describe('My First End to End Test', () => {
   it('Visits the PHP Ajax Crud... and performs full end to end cycle', () => {
-    cy.visit('http://php-ajax-crud-using-jquery-ui-demo.test/');
+    cy.visit('http://localhost:8080/');
     cy.contains('First Name');
     cy.contains('Last Name');
     cy.contains('Edit');

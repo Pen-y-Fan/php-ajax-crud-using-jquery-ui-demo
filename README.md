@@ -28,12 +28,12 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Use the PDO prepared statements in the model class
 - [x] Refactor jQuery (script.js)
 - [x] Refactor API endpoints to only return JSON and update Tests
-- [ ] Add Cypress tests
+- [x] Add Cypress tests
 - [ ] Add validation and Tests for the PeopleController
 
 ## Requirements
 
-- PHP 7.1+
+- PHP 7.3+
 - Apache
 - MySQL
 
@@ -57,7 +57,15 @@ been configured for you. You can set up the project with a local configuration.
 
 ### Docker
 
-```sh
+The first time the repo is clone, a new docker build the image is required to be built, this only needs to be done once.
+
+```shell
+make build-image
+```
+
+Then the project can be started
+
+```sh 
 make up
 ```
 
@@ -114,12 +122,17 @@ Adding sample data
 3 names added to table
 ```
 
+Note: Rerunning the build command will add the 3 names again. It will not drop the table or database, if they already
+exist.
+
 Open your browser to <http://localhost:8080> and view the app.
 
 !["Example CRUD app"](./doc/php-ajax-crup-app.png "Example CRUD app")
 
-Note: Rerunning the build command will add the 3 names again. It will not drop the table or database, if they already
-exist.
+### Xdubug
+
+Should the app need to be debuged, the site parallel website is available on port **8081**. Open your browser to
+<http://localhost:8081> and view the app. Point your debugging tools to use docker-compose ajaxcrudx service.  
 
 ## License
 
