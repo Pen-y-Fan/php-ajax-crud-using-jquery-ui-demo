@@ -1,7 +1,7 @@
 # PHP AJAX CRUD using jQuery UI Demo
 
-The original
-source: [WebsLesson PHP Ajax Crud using JQuery UI Dialog](https://www.webslesson.info/2018/03/php-ajax-crud-using-jquery-ui-dialog.html)
+The original source: 
+[WebsLesson PHP Ajax Crud using JQuery UI Dialog](https://www.webslesson.info/2018/03/php-ajax-crud-using-jquery-ui-dialog.html)
 
 This is a PHP AJAX CRUD app. It performs basic CRUD operations, using jQuery Ajax calls, to a PHP backend.
 
@@ -63,6 +63,12 @@ The first time the repo is clone, a new docker build the image is required to be
 make build-image
 ```
 
+The table can be built, seeded with three records, these can be deleted as required.
+
+```shell
+make seed
+```
+
 Then the project can be started
 
 ```sh 
@@ -71,10 +77,12 @@ make up
 
 You can check if you have make installed by running `make --version`
 
-Without make the following docker-compose command can be used:
+Without make the following docker-compose commands can be used:
 
 ```sh
-docker-compose up --build --remove-orphans -d
+docker build -t apachephp:local .
+docker-compose run -u 100:101 ajaxcrud php /app/build_db.php
+docker-compose up --remove-orphans -d
 ```
 
 ### Local configuration
@@ -96,7 +104,7 @@ The database, table and sample data can be created by following one of the follo
 - Use the make script
 
 ```sh
-make build
+make seed
 ```
 
 - Or the docker command:
@@ -129,10 +137,50 @@ Open your browser to <http://localhost:8080> and view the app.
 
 !["Example CRUD app"](./doc/php-ajax-crup-app.png "Example CRUD app")
 
-### Xdubug
+### XDubug
 
-Should the app need to be debuged, the site parallel website is available on port **8081**. Open your browser to
-<http://localhost:8081> and view the app. Point your debugging tools to use docker-compose ajaxcrudx service.  
+Should the app need to be debugged, the site parallel website is available on port **8081**. Open your browser to
+<http://localhost:8081> and view the app. Point your debugging tools to use docker-compose **ajaxcrudx** service.  
+
+## Cypress testing
+
+On Linux, the first time you run Cypress it will need to register with **xhost**, run the following command:
+
+```shell
+make cypress-register
+```
+
+Which will run the following docker command:
+
+```shell
+xhost +local:`docker inspect --format='{{ .ContainerConfig.Hostname }}' cypress/included:6.6.0`
+```
+
+Cypress tests can be run, once the system is registered once and is running `make up`, you can run the Cypress tests.
+
+```shell
+make cypress
+```
+
+This runs the following docker command, for Linux, which will run the Cypress docker container. It includes Firefox and 
+will display on the host monitor!
+
+```shell
+docker run -it --rm -d -v ./:/e2e -v /tmp/.X11-unix:/tmp/.X11-unix --net=host -w /e2e \ 
+  -e DISPLAY --entrypoint cypress cypress/included:6.6.0 open --project .
+```
+
+If the system is set up locally, update cypress/integration/**end_to_end_spec.js** with the web address e.g.
+
+- from: `cy.visit('http://localhost:8080/');`
+- to: `cy.visit('http://php-ajax-crud-using-jquery-ui-demo.local:8080/');`
+
+Then run with Node and NPM
+
+```shell
+npm install
+npx cypress run
+```
 
 ## License
 
