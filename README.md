@@ -29,7 +29,7 @@ The idea is to update the app to resemble an MVC framework.
 - [x] Refactor jQuery (script.js)
 - [x] Refactor API endpoints to only return JSON and update Tests
 - [x] Add Cypress tests
-- [ ] Add validation and Tests for the PeopleController
+- [x] Add validation and Tests for the PeopleController
 
 ## Requirements
 
