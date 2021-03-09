@@ -37,12 +37,34 @@ class ShowTest extends TestCase
         $_GET['id'] = 1;
 
         ob_start();
-        require __DIR__ . '/../public/api/show/index.php';
+        require_once __DIR__ . '/../public/api/show/index.php';
         $output = ob_get_clean();
 
         self::assertNotFalse($output, 'Unable to test output of api/index.php');
 
         self::assertSame('[{"id":"1","first_name":"Fred","last_name":"Bloggs"}]', $output);
+    }
+
+    public function testItCanShowAnInvalidId(): void
+    {
+        $database = $this->database;
+
+        $_GET['id'] = -1;
+
+        ob_start();
+        require_once __DIR__ . '/../public/api/show/index.php';
+        $output = ob_get_contents();
+        if (! $output) {
+            hasShowAnId();
+            callShow(getPeopleController($database));
+            $output = ob_get_contents();
+        }
+
+        ob_get_clean();
+
+        self::assertNotFalse($output, 'Unable to test output of api/index.php');
+
+        self::assertSame('{"error":"No user with id -1"}', $output);
     }
 
     public function testItCanNotShowWithoutAnId(): void

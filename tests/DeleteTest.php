@@ -84,4 +84,47 @@ class DeleteTest extends TestCase
 
         self::assertSame('{"error":"Delete action not set"}', $output);
     }
+
+    public function testItCanNotDeleteWithoutAPostId(): void
+    {
+        $database = $this->database;
+        unset($_POST['id']);
+
+        ob_start();
+        require_once __DIR__ . '/../public/api/delete/index.php';
+        $output = ob_get_contents();
+        if (! $output) {
+            hasDeleteAnId();
+            $output = ob_get_contents();
+        }
+
+        ob_get_clean();
+
+        self::assertNotFalse($output, 'Unable to test output of api/delete/index.php');
+
+        self::assertSame('{"error":"No user id supplied"}', $output);
+    }
+
+    public function testItCanNotDeleteWithoutAValidId(): void
+    {
+        $database = $this->database;
+        $_POST['action'] = 'delete';
+        $_POST['id'] = -1;
+
+        ob_start();
+        require_once __DIR__ . '/../public/api/delete/index.php';
+        $output = ob_get_contents();
+        if (! $output) {
+            hasDeleteAnId();
+            $people = getPeopleController($database);
+            callDelete($people);
+            $output = ob_get_contents();
+        }
+
+        ob_get_clean();
+
+        self::assertNotFalse($output, 'Unable to test output of api/delete/index.php');
+
+        self::assertSame('{"data":"Data deleted"}', $output);
+    }
 }
