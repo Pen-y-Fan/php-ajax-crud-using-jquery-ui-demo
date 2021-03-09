@@ -40,7 +40,11 @@ class DatabaseSettings
 
     public function __construct()
     {
-        $ini_array = parse_ini_file(__DIR__ . '/../../.env');
+        if (file_exists(__DIR__ . '/../../.env')) {
+            $ini_array = parse_ini_file(__DIR__ . '/../../.env');
+        } else {
+            $ini_array = false;
+        }
 
         if ($ini_array !== false) {
             foreach ($ini_array as $key => $value) {
