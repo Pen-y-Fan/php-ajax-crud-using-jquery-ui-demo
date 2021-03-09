@@ -9,7 +9,7 @@ use PDO;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 
-class PeopleTest extends TestCase
+class PeopleModelTest extends TestCase
 {
     /**
      * @var CreateSQLiteTable
