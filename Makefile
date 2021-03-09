@@ -105,3 +105,8 @@ cypress:
 		-v $(shell pwd):/e2e \
 	 	-v /tmp/.X11-unix:/tmp/.X11-unix --net=host -w /e2e \
 		--entrypoint cypress cypress/included:6.6.0 open --project .
+
+cypress-run:
+	docker run -it --rm -w /e2e \
+		-v $(shell pwd):/e2e \
+		cypress/included:6.6.0
