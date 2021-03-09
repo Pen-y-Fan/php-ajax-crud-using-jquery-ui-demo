@@ -20,8 +20,6 @@ parameters:
             message: '#Variable \$\w+ might not be defined\.#'
             paths:
                 - database_connection.php
-                - public/fetch.php
-                - public/action.php
                 - build_db.php
         -
             message: '#Cannot call method prepare\(\) on null\.#'
