@@ -1,35 +1,13 @@
 # PHP AJAX CRUD using jQuery UI Demo
 
-The original source: 
+!["php crud using jQuery"](./doc/php-ajax-crup-app-with-smily.png "Example CRUD app")
+
+The original source:
 [WebsLesson PHP Ajax Crud using JQuery UI Dialog](https://www.webslesson.info/2018/03/php-ajax-crud-using-jquery-ui-dialog.html)
 
 This is a PHP AJAX CRUD app. It performs basic CRUD operations, using jQuery Ajax calls, to a PHP backend.
 
 The idea is to update the app to resemble an MVC framework.
-
-## TODO
-
-- [x] Add Docker, docker-compose and Makefile to allow the app to be easily started and stopped
-- [x] Set up the database
-- [x] Move the database config out of the public directory
-- [x] Separate the css and js from the html
-- [x] Add the README.md and LICENSE
-- [x] Create GitHub repo
-- [x] Add composer
-- [x] Add tooling: ECS, PHPUnit, PhpStan and Rector (jakzal/phpqa:1.50-php7.4-alpine)
-- [x] Test SQLite in memory DB
-- [x] Add CRUD tests using SQLite in memory DB
-    - [x] refactor PHP files for testing environment (add **config** to **.env**)
-- [x] Refactor PHP files to classes
-    - [x] Add namespacing and auto-loading
-- [x] Move jQuery script out of index.html into own file in js directory
-- [x] Refactor PHP classes to API endpoints
-- [x] Refactor PHP to return JSON, move view logic from PHP files into jQuery
-- [x] Use the PDO prepared statements in the model class
-- [x] Refactor jQuery (script.js)
-- [x] Refactor API endpoints to only return JSON and update Tests
-- [x] Add Cypress tests
-- [x] Add validation and Tests for the PeopleController
 
 ## Requirements
 
@@ -52,7 +30,7 @@ For other ways see [github docs](https://docs.github.com/en/github/using-git/whi
 
 ## Setup
 
-The easiest way it to use the provided Makefile. This will spin up the Docker environment, all the default setting have 
+The easiest way it to use the provided Makefile. This will spin up the Docker environment, all the default setting have
 been configured for you. You can set up the project with a local configuration.
 
 ### Docker
@@ -80,8 +58,7 @@ You can check if you have make installed by running `make --version`
 Without make the following docker-compose commands can be used:
 
 ```sh
-docker build -t apachephp:local .
-docker-compose run -u 100:101 ajaxcrud php /app/build_db.php
+docker-compose run -u 100:101 ajaxcrud php build_db.php
 docker-compose up --remove-orphans -d
 ```
 
@@ -110,7 +87,7 @@ make seed
 - Or the docker command:
 
 ```sh
-docker-compose exec -u 100:101 ajaxcrud php /app/build_db.php
+docker-compose exec -u 100:101 ajaxcrud php build_db.php
 ```
 
 - Or use PHP locally:
@@ -135,12 +112,10 @@ exist.
 
 Open your browser to <http://localhost:8080> and view the app.
 
-!["Example CRUD app"](./doc/php-ajax-crup-app.png "Example CRUD app")
-
 ### XDubug
 
-Should the app need to be debugged, the site parallel website is available on port **8081**. Open your browser to
-<http://localhost:8081> and view the app. Point your debugging tools to use docker-compose **ajaxcrudx** service.  
+Should the app need to be debugged, the parallel website is available on port **8081**. Open your browser to
+<http://localhost:8081> and view the app. Point your debugging tools to use docker-compose **ajaxcrudx** service.
 
 ## Cypress testing
 
@@ -162,7 +137,7 @@ Cypress tests can be run, once the system is registered once and is running `mak
 make cypress
 ```
 
-This runs the following docker command, for Linux, which will run the Cypress docker container. It includes Firefox and 
+This runs the following docker command, for Linux, which will run the Cypress docker container. It includes Firefox and
 will display on the host monitor!
 
 ```shell
@@ -181,6 +156,30 @@ Then run with Node and NPM
 npm install
 npx cypress run
 ```
+
+## TODO
+
+- [x] Add Docker, docker-compose and Makefile to allow the app to be easily started and stopped
+- [x] Set up the database
+- [x] Move the database config out of the public directory
+- [x] Separate the css and js from the html
+- [x] Add the README.md and LICENSE
+- [x] Create GitHub repo
+- [x] Add composer
+- [x] Add tooling: ECS, PHPUnit, PhpStan and Rector (jakzal/phpqa:1.50-php7.4-alpine)
+- [x] Test SQLite in memory DB
+- [x] Add CRUD tests using SQLite in memory DB
+    - [x] refactor PHP files for testing environment (add **config** to **.env**)
+- [x] Refactor PHP files to classes
+    - [x] Add namespacing and auto-loading
+- [x] Move jQuery script out of index.html into own file in js directory
+- [x] Refactor PHP classes to API endpoints
+- [x] Refactor PHP to return JSON, move view logic from PHP files into jQuery
+- [x] Use the PDO prepared statements in the model class
+- [x] Refactor jQuery (script.js)
+- [x] Refactor API endpoints to only return JSON and update Tests
+- [x] Add Cypress tests
+- [x] Add validation and Tests for the PeopleController
 
 ## License
 
