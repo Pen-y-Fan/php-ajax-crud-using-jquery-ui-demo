@@ -1,5 +1,14 @@
 <?php
-/** @noinspection ALL */
+declare(strict_types=1);
+
+/**
+ * @var string $dbHost
+ * @var string $dbName
+ * @var string $dbCharset
+ * @var string $dbUser
+ * @var string $dbPassword
+ * @var array<int, int|bool> $dbOptions
+ */
 include_once __DIR__ . '/database_settings.php';
 
 echo 'Building db' . PHP_EOL;
@@ -14,7 +23,10 @@ try {
     );
 } catch (PDOException $e) {
     echo "DB ERROR: " . $e->getMessage() . PHP_EOL;
-    die(print_r($connect->errorInfo(), true));
+    if (isset($connect)) {
+        die(print_r($connect->errorInfo(), true));
+    }
+    die("There was a problem with the connection");
 }
 $connect = null;
 
@@ -31,11 +43,14 @@ CREATE TABLE IF NOT EXISTS tbl_sample
 );
 SQL;
 
+/** @var $connect PDO */
 include __DIR__ . '/database_connection.php';
 
 try {
     $stmt = $connect->prepare($createTable_SQL);
-    $stmt->execute();
+    if ($stmt !== false) {
+        $stmt->execute();
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -43,30 +58,37 @@ try {
 echo 'Table tbl_sample created' . PHP_EOL;
 echo 'Adding sample data' . PHP_EOL;
 
-$table_SQLinsert = <<<SQL
+$table_SQLinsert = /** @lang MYSQL */
+    <<<MYSQL
 INSERT INTO tbl_sample (`first_name`, `last_name`)
     VALUES (:firstName, :lastName );
-SQL;
+MYSQL;
 
 $firstName = '';
 $lastName = '';
 
-$stmt = $connect->prepare($table_SQLinsert);
-$stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR, 255);
-$stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR, 255);
+try {
+    $stmt = $connect->prepare($table_SQLinsert);
+    if ($stmt !== false) {
+        $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR, 255);
+        $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR, 255);
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
 
 $names = [
     [
         'firstName' => 'Fred',
-        'lastName' => 'Bloggs'
+        'lastName'  => 'Bloggs'
     ],
     [
         'firstName' => 'David',
-        'lastName' => 'Williams'
+        'lastName'  => 'Williams'
     ],
     [
         'firstName' => 'John',
-        'lastName' => 'Smith'
+        'lastName'  => 'Smith'
     ],
 ];
 
@@ -75,14 +97,15 @@ foreach ($names as $name) {
     try {
         $firstName = $name['firstName'];
         $lastName = $name['lastName'];
-        $stmt->execute();
-        $i++;
+
+        if (isset($stmt) && $stmt !== false) {
+            $stmt->execute();
+            $i++;
+        }
+    } catch (PDOException $e) {
+        echo "Error adding name" . PHP_EOL . $e->getMessage();
+        print_r($name);
     }
-    catch(PDOException $e)
-     {
-         echo "Error adding name" . PHP_EOL . $e->getMessage();
-         print_r($name);
-     }
 }
 // Confirm the number of names added
 echo "$i names added to table" . PHP_EOL;
