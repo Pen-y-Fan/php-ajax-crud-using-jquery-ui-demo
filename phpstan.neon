@@ -14,13 +14,7 @@ parameters:
     # Level 8 is the highest level
     level: 8
 
-    # TODO: These files will be refactored
     ignoreErrors:
-        -
-            message: '#Variable \$\w+ might not be defined\.#'
-            paths:
-                - database_connection.php
-                - build_db.php
         -
             message: '#Cannot call method prepare\(\) on null\.#'
             path: build_db.php
